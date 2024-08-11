@@ -6,7 +6,7 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  SLN_PATH: 'RapidEnum/RapidEnum.sln'
+  SLN_PATH: 'RapidEnum.sln'
   
 jobs:
   test:
@@ -19,9 +19,6 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-      - run: |
-          pwd
-          ls
       - run: dotnet restore
       - run: dotnet build --configuration Release --no-restore
       - run: dotnet test "${SLN_PATH}" --no-restore --verbosity normal
