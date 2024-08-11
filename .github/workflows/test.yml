@@ -19,6 +19,9 @@ jobs:
       - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+      - run: |
+          pwd
+          ls
       - run: dotnet restore
       - run: dotnet build --configuration Release --no-restore
       - run: dotnet test "${SLN_PATH}" --no-restore --verbosity normal
