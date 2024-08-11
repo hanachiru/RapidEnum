@@ -6,7 +6,7 @@ on:
 
 env:
   DOTNET_VERSION: '8.0.x'
-  SLN_PATH: './RapidEnum.sln'
+  SLN_PATH: 'RapidEnum/RapidEnum.sln'
   
 jobs:
   test:
