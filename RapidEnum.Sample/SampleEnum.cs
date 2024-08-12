@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 
 namespace RapidEnum.Sample;
 
@@ -11,8 +12,10 @@ public class SampleEnum
         B,
         C
     }
-}
+    
+    [RapidEnumMarker(typeof(DateTimeKind))]
+    public static partial class DateTimeKindEnumExtensions { }
 
-// public static class SampleEnumUtilForRapidEnum
-// {
-// }
+    [RapidEnumMarker(typeof(JsonTokenType))]
+    public static partial class JsonTokenTypeEnumExtensions { }
+}
