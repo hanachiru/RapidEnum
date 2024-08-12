@@ -17,8 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RapidEnum.Core\RapidEnum.Core.csproj" />
+        <ProjectReference Include="..\RapidEnum.Core\RapidEnum.Core.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
-
-
 </Project>

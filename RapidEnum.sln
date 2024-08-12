@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Sample", "RapidEn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Tests", "RapidEnum.Tests\RapidEnum.Tests.csproj", "{EA0DF095-B239-4AA3-BF7D-7CDFAF5AEA84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Benchmark", "RapidEnum.Benchmark\RapidEnum.Benchmark.csproj", "{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{EA0DF095-B239-4AA3-BF7D-7CDFAF5AEA84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA0DF095-B239-4AA3-BF7D-7CDFAF5AEA84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA0DF095-B239-4AA3-BF7D-7CDFAF5AEA84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Debug|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
