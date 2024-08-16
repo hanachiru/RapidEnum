@@ -1,12 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Core", "RapidEnum.Core\RapidEnum.Core.csproj", "{5BC80769-C125-4157-A3BB-EBFCDEA8421F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Generators", "RapidEnum.Generators\RapidEnum.Generators.csproj", "{5BC80769-C125-4157-A3BB-EBFCDEA8421F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Sample", "RapidEnum.Sample\RapidEnum.Sample.csproj", "{56B58E29-8150-410A-A6A0-75B56401397F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Tests", "RapidEnum.Tests\RapidEnum.Tests.csproj", "{EA0DF095-B239-4AA3-BF7D-7CDFAF5AEA84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Benchmark", "RapidEnum.Benchmark\RapidEnum.Benchmark.csproj", "{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RapidEnum.Core", "RapidEnum.Core\RapidEnum.Core.csproj", "{32A79DD6-ED91-4EB8-8FC1-FBBDB975CF4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,9 @@ Global
 		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Debug|Any CPU.ActiveCfg = Release|Any CPU
 		{83F14BE4-588F-40C2-A7CB-8D4FBF0AE3BD}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{32A79DD6-ED91-4EB8-8FC1-FBBDB975CF4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A79DD6-ED91-4EB8-8FC1-FBBDB975CF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A79DD6-ED91-4EB8-8FC1-FBBDB975CF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A79DD6-ED91-4EB8-8FC1-FBBDB975CF4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
