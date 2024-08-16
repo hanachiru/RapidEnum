@@ -13,12 +13,12 @@ public class RapidEnumGeneratorContext
     public string EnumFullName { get; }
     public string[] EnumNames { get; }
     
-    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol)
+    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol, string? namespaceName = null)
     {
         ClassName = $"{enumSymbol.Name}EnumExtensions";
         GeneratedFileName = $"{ClassName}.g.cs";
         
-        NameSpace = enumSymbol.ContainingNamespace.IsGlobalNamespace ? null : enumSymbol.ContainingNamespace.ToDisplayString();
+        NameSpace = namespaceName ?? (enumSymbol.ContainingNamespace.IsGlobalNamespace ? null : enumSymbol.ContainingNamespace.ToDisplayString());
         
         EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         EnumNames = enumSymbol.GetMembers()

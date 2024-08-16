@@ -9,7 +9,6 @@ public class RapidEnumGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        // TODO: メソッド名をみて生やす
         var markerProvider = context.SyntaxProvider
             .ForAttributeWithMetadataName($"{Constants.AttributeNameSpace}.{Constants.MarkerAttributeName}",
                 static (node, token) =>
@@ -23,7 +22,8 @@ public class RapidEnumGenerator : IIncrementalGenerator
                     var enumSymbol = context.Attributes
                         .FirstOrDefault(x => x?.AttributeClass?.Name == Constants.MarkerAttributeName)
                         ?.ConstructorArguments.FirstOrDefault().Value as INamedTypeSymbol;
-                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(enumSymbol);
+                    var namespaceName = context.TargetSymbol.ContainingNamespace.IsGlobalNamespace ? null : context.TargetSymbol.ContainingNamespace.ToDisplayString();
+                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(enumSymbol, namespaceName);
                 }).Where(x => x != null);
 
         context.RegisterSourceOutput(markerProvider, static (context, generationContext) =>

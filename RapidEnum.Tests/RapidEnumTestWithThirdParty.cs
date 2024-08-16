@@ -4,12 +4,12 @@ using NUnit.Framework.Legacy;
 
 namespace RapidEnum.Tests;
 
+[RapidEnumMarker(typeof(JsonTokenType))]
+public static partial class JsonTokenTypeEnumExtensions { }
+
 [TestFixture]
 public class RapidEnumTestWithThirdParty
 {
-    [RapidEnumMarker(typeof(JsonTokenType))]
-    public static partial class JsonTokenTypeEnumExtensions { }
-
     [Test]
     public void ToStringFastPassTest()
     {
@@ -20,21 +20,21 @@ public class RapidEnumTestWithThirdParty
     [Test]
     public void IsDefinedUsingEnumPassTest()
     {
-        Assert.That(System.Text.Json.JsonTokenTypeEnumExtensions.IsDefined(JsonTokenType.Comment), Is.EqualTo(true));
-        Assert.That(System.Text.Json.JsonTokenTypeEnumExtensions.IsDefined((JsonTokenType)byte.MaxValue), Is.EqualTo(false));
+        Assert.That(JsonTokenTypeEnumExtensions.IsDefined(JsonTokenType.Comment), Is.EqualTo(true));
+        Assert.That(JsonTokenTypeEnumExtensions.IsDefined((JsonTokenType)byte.MaxValue), Is.EqualTo(false));
     }
     
     [Test]
     public void IsDefinedUsingNamePassTest()
     {
-        Assert.That(System.Text.Json.JsonTokenTypeEnumExtensions.IsDefined(nameof(JsonTokenType.Comment)), Is.EqualTo(true));
-        Assert.That(System.Text.Json.JsonTokenTypeEnumExtensions.IsDefined("10"), Is.EqualTo(false));
+        Assert.That(JsonTokenTypeEnumExtensions.IsDefined(nameof(JsonTokenType.Comment)), Is.EqualTo(true));
+        Assert.That(JsonTokenTypeEnumExtensions.IsDefined("10"), Is.EqualTo(false));
     }
     
     [Test]
     public void GetValuesPassTest()
     {
-        var values = System.Text.Json.JsonTokenTypeEnumExtensions.GetValues();
+        var values = JsonTokenTypeEnumExtensions.GetValues();
     
         CollectionAssert.AreEqual(values, new[]
         {
@@ -56,7 +56,7 @@ public class RapidEnumTestWithThirdParty
     [Test]
     public void GetNamesPassTest()
     {
-        var values = System.Text.Json.JsonTokenTypeEnumExtensions.GetNames();
+        var values = JsonTokenTypeEnumExtensions.GetNames();
 
         CollectionAssert.AreEqual(values, new[]
         {
@@ -79,7 +79,7 @@ public class RapidEnumTestWithThirdParty
     public void TryParsePassTest()
     {
         {
-            if (System.Text.Json.JsonTokenTypeEnumExtensions.TryParse(nameof(JsonTokenType.Comment), out var value))
+            if (JsonTokenTypeEnumExtensions.TryParse(nameof(JsonTokenType.Comment), out var value))
             {
                 Assert.That(value, Is.EqualTo(JsonTokenType.Comment));
             }
@@ -89,7 +89,7 @@ public class RapidEnumTestWithThirdParty
             }
         }
         {
-            if (System.Text.Json.JsonTokenTypeEnumExtensions.TryParse("10", out var value))
+            if (JsonTokenTypeEnumExtensions.TryParse("10", out var value))
             {
                 Assert.That(value, Is.EqualTo((JsonTokenType)10));
             }
@@ -104,7 +104,7 @@ public class RapidEnumTestWithThirdParty
     public void TryParseIgnoreCasePassTest()
     {
         {
-            if (System.Text.Json.JsonTokenTypeEnumExtensions.TryParse(nameof(JsonTokenType.Comment).ToLower(), out var value, true))
+            if (JsonTokenTypeEnumExtensions.TryParse(nameof(JsonTokenType.Comment).ToLower(), out var value, true))
             {
                 Assert.That(value, Is.EqualTo(JsonTokenType.Comment));
             }
@@ -114,7 +114,7 @@ public class RapidEnumTestWithThirdParty
             }
         }
         {
-            if (System.Text.Json.JsonTokenTypeEnumExtensions.TryParse("10".ToLower(), out var value, true))
+            if (JsonTokenTypeEnumExtensions.TryParse("10".ToLower(), out var value, true))
             {
                 Assert.That(value, Is.EqualTo((JsonTokenType)10));
             }
@@ -128,7 +128,7 @@ public class RapidEnumTestWithThirdParty
     [Test]
     public void GetUnderlyingTypeTest()
     {
-        var underlyingType2 = System.Text.Json.JsonTokenTypeEnumExtensions.GetUnderlyingType();
+        var underlyingType2 = JsonTokenTypeEnumExtensions.GetUnderlyingType();
         Assert.That(underlyingType2.FullName, Is.EqualTo("System.Byte"));
     }
 }

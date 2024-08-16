@@ -4,12 +4,12 @@ using NUnit.Framework.Legacy;
 
 namespace RapidEnum.Tests;
 
+[RapidEnumMarker(typeof(DateTimeKind))]
+public static partial class DateTimeKindEnumExtensions { }
+
 [TestFixture]
 public class RapidEnumTestWithSystem
 {
-    [RapidEnumMarker(typeof(DateTimeKind))]
-    public static partial class DateTimeKindEnumExtensions { }
-
     [Test]
     public void ToStringFastPassTest()
     {
@@ -20,21 +20,21 @@ public class RapidEnumTestWithSystem
     [Test]
     public void IsDefinedUsingEnumPassTest()
     {
-        Assert.That(System.DateTimeKindEnumExtensions.IsDefined(DateTimeKind.Local), Is.EqualTo(true));
-        Assert.That(System.DateTimeKindEnumExtensions.IsDefined((DateTimeKind)int.MaxValue), Is.EqualTo(false));
+        Assert.That(DateTimeKindEnumExtensions.IsDefined(DateTimeKind.Local), Is.EqualTo(true));
+        Assert.That(DateTimeKindEnumExtensions.IsDefined((DateTimeKind)int.MaxValue), Is.EqualTo(false));
     }
     
     [Test]
     public void IsDefinedUsingNamePassTest()
     {
-        Assert.That(System.DateTimeKindEnumExtensions.IsDefined(nameof(DateTimeKind.Local)), Is.EqualTo(true));
-        Assert.That(System.DateTimeKindEnumExtensions.IsDefined("10"), Is.EqualTo(false));
+        Assert.That(DateTimeKindEnumExtensions.IsDefined(nameof(DateTimeKind.Local)), Is.EqualTo(true));
+        Assert.That(DateTimeKindEnumExtensions.IsDefined("10"), Is.EqualTo(false));
     }
     
     [Test]
     public void GetValuesPassTest()
     {
-        var values = System.DateTimeKindEnumExtensions.GetValues();
+        var values = DateTimeKindEnumExtensions.GetValues();
     
         CollectionAssert.AreEqual(values, new[]
         {
@@ -47,7 +47,7 @@ public class RapidEnumTestWithSystem
     [Test]
     public void GetNamesPassTest()
     {
-        var values = System.DateTimeKindEnumExtensions.GetNames();
+        var values = DateTimeKindEnumExtensions.GetNames();
     
         CollectionAssert.AreEqual(values, new[]
         {
@@ -61,7 +61,7 @@ public class RapidEnumTestWithSystem
     public void TryParsePassTest()
     {
         {
-            if (System.DateTimeKindEnumExtensions.TryParse(nameof(DateTimeKind.Local), out var value))
+            if (DateTimeKindEnumExtensions.TryParse(nameof(DateTimeKind.Local), out var value))
             {
                 Assert.That(value, Is.EqualTo(DateTimeKind.Local));
             }
@@ -71,7 +71,7 @@ public class RapidEnumTestWithSystem
             }
         }
         {
-            if (System.DateTimeKindEnumExtensions.TryParse("10", out var value))
+            if (DateTimeKindEnumExtensions.TryParse("10", out var value))
             {
                 Assert.That(value, Is.EqualTo((DateTimeKind)10));
             }
@@ -86,7 +86,7 @@ public class RapidEnumTestWithSystem
     public void TryParseIgnoreCasePassTest()
     {
         {
-            if (System.DateTimeKindEnumExtensions.TryParse(nameof(DateTimeKind.Local).ToLower(), out var value, true))
+            if (DateTimeKindEnumExtensions.TryParse(nameof(DateTimeKind.Local).ToLower(), out var value, true))
             {
                 Assert.That(value, Is.EqualTo(DateTimeKind.Local));
             }
@@ -96,7 +96,7 @@ public class RapidEnumTestWithSystem
             }
         }
         {
-            if (System.DateTimeKindEnumExtensions.TryParse("10".ToLower(), out var value, true))
+            if (DateTimeKindEnumExtensions.TryParse("10".ToLower(), out var value, true))
             {
                 Assert.That(value, Is.EqualTo((DateTimeKind)10));
             }
@@ -110,7 +110,7 @@ public class RapidEnumTestWithSystem
     [Test]
     public void GetUnderlyingTypeTest()
     {
-        var underlyingType = System.DateTimeKindEnumExtensions.GetUnderlyingType();
+        var underlyingType = DateTimeKindEnumExtensions.GetUnderlyingType();
         Assert.That(underlyingType.FullName, Is.EqualTo("System.Int32"));
     }
 }
