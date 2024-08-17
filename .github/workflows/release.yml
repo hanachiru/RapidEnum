@@ -7,6 +7,7 @@ on:
         type: choice
         options: [major, minor, patch]
         required: true
+        default: patch
         description: 'The level of version bump to apply'
 
 jobs:
