@@ -58,8 +58,10 @@ jobs:
           git switch -c "${BRANCH}"
           git add RapidEnum.NuGet/RapidEnum.nuspec
           git add RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json
-          git commit -m "Update v${VERSION}"
+          message="Update v${VERSION}"
+          git commit -m "${message}"
           git push origin "${BRANCH}"
+          git pr create --head "${BRANCH}" --title "${message}" --body "${message}"
           gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes
       - uses: actions/setup-dotnet@v4
         with:
