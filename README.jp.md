@@ -12,7 +12,7 @@ RapidEnumは、C#/.NET用の高速に動作する列挙型ユーティリティ�
 
 RapidEnumは[FastEnum](https://github.com/xin9le/FastEnum)に多大の影響を受けています。APIはFastEnumに非常に似ています。素晴らしいライブラリを作成してくださった[xin9le](https://github.com/xin9le)さんに感謝しています！
 
-# Table of Contents
+# 目次
 
 - [要件](#要件)
 - [インストール](#インストール)
