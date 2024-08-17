@@ -14,6 +14,15 @@ RapidEnum is heavily influenced by [FastEnum](https://github.com/xin9le/FastEnum
 
 # Table of Contents
 
+- [Requirements](#Requirements)
+- [Installation](#Installation)
+    - [NuGet](#NuGet)
+    - [Unity](#Unity)
+- [How to use](#How-to-use)
+    - [Basic usage](#Basic-usage)
+    - [How to use it for any enum](#How-to-use-it-for-any-enum)
+- [Performance comparison](#Performance-comparison)
+
 # Requirements
 - .NET Standard2.0 or newer
 - Unity 2022.3.12f1 or newer
