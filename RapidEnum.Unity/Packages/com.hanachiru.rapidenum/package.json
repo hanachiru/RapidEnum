@@ -1,12 +1,11 @@
 {
   "name": "com.hanachiru.rapidenum",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "displayName": "Rapid Enum",
   "description": "Enum utility with SourceGenerator for C#/.NET",
   "unity": "2022.3",
   "unityRelease": "12f1",
-  "dependencies": {
-  },
+  "dependencies": {},
   "keywords": [],
   "author": {
     "name": "hanachiru",
