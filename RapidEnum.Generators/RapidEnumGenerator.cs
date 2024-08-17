@@ -181,13 +181,19 @@ public class RapidEnumGenerator : IIncrementalGenerator
                       
                         public sealed class Member
                         {
-                            public {{{context.EnumFullName}}} Value { get; }
                             public string Name { get; }
+                            public {{{context.EnumFullName}}} Value { get; }
                 
                             internal Member(string name, {{{context.EnumFullName}}} value)
                             {
                                 Name = name;
                                 Value = value;
+                            }
+                            
+                            public void Deconstruct(out string name, out {{{context.EnumFullName}}} value)
+                            {
+                                name = Name;
+                                value = Value;
                             }
                         }
                         
