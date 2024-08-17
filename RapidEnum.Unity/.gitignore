@@ -577,3 +577,8 @@ sysinfo.txt
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider,macos,unity
 
 !/Packages/com.hanachiru.rapidenum/
+!/Packages/com.hanachiru.rapidenum/netstandard2.0/
+!/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Core.dll
+!/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Core.dll.meta
+!/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Generators.dll
+!/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Generators.dll.meta
