@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -20,13 +19,17 @@ public class RapidEnumGenerator : IIncrementalGenerator
                 static (context, token) =>
                 {
                     token.ThrowIfCancellationRequested();
-                    var enumSymbol = context.Attributes
-                        .FirstOrDefault(x => x?.AttributeClass?.Name == Constants.MarkerAttributeName)
-                        ?.ConstructorArguments.FirstOrDefault().Value as INamedTypeSymbol;
+                    if (context.TargetSymbol is not INamedTypeSymbol targetSymbol)
+                    {
+                        return null;
+                    }
+
                     var accessibility = context.TargetSymbol.DeclaredAccessibility;
                     if (accessibility != Accessibility.Public && accessibility != Accessibility.Internal) return null;
-                    var namespaceName = context.TargetSymbol.ContainingNamespace.IsGlobalNamespace ? null : context.TargetSymbol.ContainingNamespace.ToDisplayString();
-                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(enumSymbol, namespaceName, accessibility);
+                    var enumSymbol = context.Attributes
+                                .FirstOrDefault(x => x?.AttributeClass?.Name == Constants.MarkerAttributeName)
+                                ?.ConstructorArguments.FirstOrDefault().Value as INamedTypeSymbol;
+                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(targetSymbol, enumSymbol);
                 }).Where(x => x != null);
 
         context.RegisterSourceOutput(markerProvider, static (context, generationContext) =>
