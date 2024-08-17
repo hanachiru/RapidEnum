@@ -14,21 +14,116 @@ RapidEnum is heavily influenced by [FastEnum](https://github.com/xin9le/FastEnum
 
 # Table of Contents
 
-# Requirement
+# Requirements
 - .NET Standard2.0 or newer
 - Unity 2022.3.12f1 or newer
 
 # Installation
 ## NuGet
+```shell
+$ dotnet add package RapidEnum
+```
+**nuget.org : [RapidEnum](https://www.nuget.org/packages/RapidEnum)**
 
 ## Unity
+Add the following git URL from the Package Manager
+```
+https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.hanachiru.rapidenum
+```
+![UPM](./Images/UPM.png)
 
 # How to use
 ## Basic usage
+Attaching the `[RapidEnum]` to the target enum generates an enum utility class. Note that this is only valid for `public` or `internal` enum.
+
+```csharp
+[RapidEnum]
+public enum Weather
+{
+    Sun,
+    Cloud,
+    Rain,
+    Snow
+}
+```
+
+The `Enumerated type name + EnumExtensions` class defines the relevant methods.
+
+```csharp
+// Sun,Cloud,Rain,Snow
+IReadOnlyList<Weather> values = WeatherEnumExtensions.GetValues();
+
+// Sun,Cloud,Rain,Snow
+IReadOnlyList<string> names = WeatherEnumExtensions.GetNames();
+
+// Rain
+string name = WeatherEnumExtensions.GetName(Weather.Rain);
+
+// Cloud
+string str = Weather.Cloud.ToStringFast();
+
+// True
+bool defined = WeatherEnumExtensions.IsDefined("Sun");
+
+// Sun
+Weather parse = WeatherEnumExtensions.Parse("Sun");
+
+// True
+// Sun
+bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
+```
 
 ## How to use it for any enum
+The `[RapidEnumWithType]` can be used to generate utility classes for any enum.
+
+For `static partial classes` that are `public` or `internal`, give them a `[RapidEnumWithType]` with the target enum as an argument. The class name can be any string, but `Enum name + EnumExtensions` is easier to understand.
+
+```csharp
+// System.DateTimeKind has Unspecified, Utc, Local
+[RapidEnumWithType(typeof(DateTimeKind))]
+public static partial class DateTimeKindEnumExtensions
+{
+}
+```
+
+There is no performance difference compared to using `[RapidEnum]`. Use `[RapidEnumWithType]` if `[RapidEnum]` cannot be given, such as an enum provided by a third-party library.
+
+```csharp
+// Unspecified,Utc,Local
+IReadOnlyList<DateTimeKind> values = DateTimeKindEnumExtensions.GetValues();
+
+// Unspecified,Utc,Local
+IReadOnlyList<string> names = DateTimeKindEnumExtensions.GetNames();
+
+// Local
+string name = DateTimeKindEnumExtensions.GetName(DateTimeKind.Local);
+
+// Local
+string str = DateTimeKind.Local.ToStringFast();
+
+// True
+bool defined = DateTimeKindEnumExtensions.IsDefined("Local");
+
+// Local
+DateTimeKind parse = DateTimeKindEnumExtensions.Parse("Local");
+
+// True
+// Local
+bool tryParse = DateTimeKindEnumExtensions.TryParse("Local", out DateTimeKind value);
+```
 
 ## Get Name and Value as a pair
+Use the `GetMembers` and `GetMember` methods if you want to get the Name and Value of enum in pairs.
+
+```csharp
+WeatherEnumExtensions.Member member = WeatherEnumExtensions.GetMember(Weather.Rain);
+var (name, value) = member;
+
+foreach (WeatherEnumExtensions.Member item in WeatherEnumExtensions.GetMembers())
+{
+    Console.WriteLine($"Name : {item.Name}, Value : {item.Value}");
+}
+```
 
 # Performance comparison
 | Method              | Mean       | Error     | StdDev    | Median     | Gen0   | Allocated |
