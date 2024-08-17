@@ -2,7 +2,7 @@
 
 [日本語版](README.jp.md)
 
-RapidEnum is a Source Generator that provides fast-running enum utilities for C#/.NET. It is faster than the [.NET functions](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0) and achieves zero allocation for all methods.
+RapidEnum is a Source Generator that provides fast-running enum utilities for C#/.NET. It is faster than the [.NET API](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0) and achieves zero allocation for all methods.
 
 **Package - [RapidEnum](https://www.nuget.org/packages/RapidEnum)**
 
@@ -14,34 +14,150 @@ RapidEnum is heavily influenced by [FastEnum](https://github.com/xin9le/FastEnum
 
 # Table of Contents
 
-# Requirement
+- [Requirements](#Requirements)
+- [Installation](#Installation)
+  - [NuGet](#NuGet)
+  - [Unity](#Unity)
+- [How to use](#How-to-use)
+  - [Basic usage](#Basic-usage)
+  - [How to use it for any enum](#How-to-use-it-for-any-enum)
+- [Performance comparison](#Performance-comparison)
+
+# Requirements
+
 - .NET Standard2.0 or newer
 - Unity 2022.3.12f1 or newer
 
 # Installation
+
 ## NuGet
+
+```shell
+$ dotnet add package RapidEnum
+```
+
+**nuget.org : [RapidEnum](https://www.nuget.org/packages/RapidEnum)**
 
 ## Unity
 
+Add the following git URL from the Package Manager
+
+```
+https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.hanachiru.rapidenum
+```
+
+![UPM](./Images/UPM.png)
+
 # How to use
+
 ## Basic usage
+
+Attaching `[RapidEnum]` to the target enum generates an enum utility class. Note that this is only valid for `public` or `internal` enum.
+
+```csharp
+[RapidEnum]
+public enum Weather
+{
+    Sun,
+    Cloud,
+    Rain,
+    Snow
+}
+```
+
+The `Enum name + EnumExtensions` class defines the relevant methods.
+
+```csharp
+// Sun,Cloud,Rain,Snow
+IReadOnlyList<Weather> values = WeatherEnumExtensions.GetValues();
+
+// Sun,Cloud,Rain,Snow
+IReadOnlyList<string> names = WeatherEnumExtensions.GetNames();
+
+// Rain
+string name = WeatherEnumExtensions.GetName(Weather.Rain);
+
+// Cloud
+string str = Weather.Cloud.ToStringFast();
+
+// True
+bool defined = WeatherEnumExtensions.IsDefined("Sun");
+
+// Sun
+Weather parse = WeatherEnumExtensions.Parse("Sun");
+
+// True
+// Sun
+bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
+```
 
 ## How to use it for any enum
 
+The `[RapidEnumWithType]` can be used to generate utility classes for any enum.
+
+For `static partial classes` that are `public` or `internal`, give them a `[RapidEnumWithType]` with the target enum as an argument. The class name can be any string, but `Enum name + EnumExtensions` is easier to understand.
+
+```csharp
+// System.DateTimeKind has Unspecified, Utc, Local
+[RapidEnumWithType(typeof(DateTimeKind))]
+public static partial class DateTimeKindEnumExtensions
+{
+}
+```
+
+There is no performance difference compared to using `[RapidEnum]`. Use `[RapidEnumWithType]` if `[RapidEnum]` cannot be given, such as an enum provided by a third-party library.
+
+```csharp
+// Unspecified,Utc,Local
+IReadOnlyList<DateTimeKind> values = DateTimeKindEnumExtensions.GetValues();
+
+// Unspecified,Utc,Local
+IReadOnlyList<string> names = DateTimeKindEnumExtensions.GetNames();
+
+// Local
+string name = DateTimeKindEnumExtensions.GetName(DateTimeKind.Local);
+
+// Local
+string str = DateTimeKind.Local.ToStringFast();
+
+// True
+bool defined = DateTimeKindEnumExtensions.IsDefined("Local");
+
+// Local
+DateTimeKind parse = DateTimeKindEnumExtensions.Parse("Local");
+
+// True
+// Local
+bool tryParse = DateTimeKindEnumExtensions.TryParse("Local", out DateTimeKind value);
+```
+
 ## Get Name and Value as a pair
 
+Use the `GetMembers` and `GetMember` methods if you want to get the Name and Value of enum in pairs.
+
+```csharp
+WeatherEnumExtensions.Member member = WeatherEnumExtensions.GetMember(Weather.Rain);
+var (name, value) = member;
+
+foreach (WeatherEnumExtensions.Member item in WeatherEnumExtensions.GetMembers())
+{
+    Console.WriteLine($"Name : {item.Name}, Value : {item.Value}");
+}
+```
+
 # Performance comparison
-| Method              | Mean       | Error     | StdDev    | Median     | Gen0   | Allocated |
-|-------------------- |-----------:|----------:|----------:|-----------:|-------:|----------:|
+
+| Method              |       Mean |     Error |    StdDev |     Median |   Gen0 | Allocated |
+| ------------------- | ---------: | --------: | --------: | ---------: | -----: | --------: |
 | RapidEnum_GetValues |  0.0042 ns | 0.0059 ns | 0.0052 ns |  0.0028 ns |      - |         - |
 | FastEnum_GetValues  |  0.0083 ns | 0.0086 ns | 0.0081 ns |  0.0055 ns |      - |         - |
 | NET_GetValues       | 64.4620 ns | 0.9908 ns | 0.9268 ns | 64.2767 ns | 0.0048 |      40 B |
-| RapidEnum_GetNames |  0.0006 ns | 0.0017 ns | 0.0015 ns |  0.0000 ns |      - |         - |
-| FastEnum_GetNames  |  0.0025 ns | 0.0031 ns | 0.0028 ns |  0.0012 ns |      - |         - |
-| NET_GetNames       | 12.3820 ns | 0.1086 ns | 0.1016 ns | 12.4076 ns | 0.0067 |      56 B |
-| RapidEnum_GetName |  0.0069 ns | 0.0085 ns | 0.0071 ns |  0.0039 ns |      - |         - |
-| FastEnum_GetName  |  0.2530 ns | 0.0070 ns | 0.0065 ns |  0.2527 ns |      - |         - |
-| NET_GetName       | 15.9190 ns | 0.0524 ns | 0.0490 ns | 15.9046 ns | 0.0029 |      24 B |
+| RapidEnum_GetNames  |  0.0006 ns | 0.0017 ns | 0.0015 ns |  0.0000 ns |      - |         - |
+| FastEnum_GetNames   |  0.0025 ns | 0.0031 ns | 0.0028 ns |  0.0012 ns |      - |         - |
+| NET_GetNames        | 12.3820 ns | 0.1086 ns | 0.1016 ns | 12.4076 ns | 0.0067 |      56 B |
+| RapidEnum_GetName   |  0.0069 ns | 0.0085 ns | 0.0071 ns |  0.0039 ns |      - |         - |
+| FastEnum_GetName    |  0.2530 ns | 0.0070 ns | 0.0065 ns |  0.2527 ns |      - |         - |
+| NET_GetName         | 15.9190 ns | 0.0524 ns | 0.0490 ns | 15.9046 ns | 0.0029 |      24 B |
 | RapidEnum_ToString  |  0.0103 ns | 0.0049 ns | 0.0046 ns |  0.0110 ns |      - |         - |
 | FastEnum_ToString   |  0.4844 ns | 0.0062 ns | 0.0052 ns |  0.4845 ns |      - |         - |
 | NET_ToString        |  6.1700 ns | 0.0451 ns | 0.0376 ns |  6.1493 ns | 0.0029 |      24 B |
@@ -66,4 +182,3 @@ Apple M2 Pro, 1 CPU, 12 logical and 12 physical cores
 [Host]     : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 DefaultJob : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 ```
-¥a
