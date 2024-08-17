@@ -3,7 +3,7 @@ using BenchmarkDotNet.Running;
 using FastEnumUtility;
 using RapidEnum;
 
-public class Program
+public static class Program
 {
     public static void Main(string[] args)
     {
@@ -35,6 +35,12 @@ public class BenchmarkTarget
     {
         _ = FastEnum.GetValues<Target>();
     }
+    
+    [Benchmark]
+    public void NET_GetValues()
+    {
+        _ = Enum.GetValues(typeof(Target)) as Target[];
+    }
 
     [Benchmark]
     public void RapidEnum_GetNames()
@@ -49,6 +55,12 @@ public class BenchmarkTarget
     }
 
     [Benchmark]
+    public void NET_GetNames()
+    {
+        _ = Enum.GetNames(typeof(Target));
+    }
+
+    [Benchmark]
     public void RapidEnum_GetName()
     {
         _ = TargetEnumExtensions.GetName(Target.B);
@@ -57,7 +69,13 @@ public class BenchmarkTarget
     [Benchmark]
     public void FastEnum_GetName()
     {
-        _ = FastEnum.GetName<Target>(Target.B);
+        _ = FastEnum.GetName(Target.B);
+    }
+
+    [Benchmark]
+    public void NET_GetName()
+    {
+        _ = Enum.GetName(typeof(Target), Target.B);
     }
 
     [Benchmark]
@@ -73,15 +91,27 @@ public class BenchmarkTarget
     }
 
     [Benchmark]
+    public void NET_ToString()
+    {
+        _ = Target.A.ToString();
+    }
+
+    [Benchmark]
     public void RapidEnum_IsDefines()
     {
-        _ = TargetEnumExtensions.IsDefined("2");
+        _ = TargetEnumExtensions.IsDefined("B");
     }
 
     [Benchmark]
     public void FastEnum_IsDefines()
     {
-        _ = FastEnum.IsDefined<Target>("2");
+        _ = FastEnum.IsDefined<Target>("B");
+    }
+
+    [Benchmark]
+    public void NET_IsDefines()
+    {
+        _ = Enum.IsDefined(typeof(Target), "B");
     }
 
     [Benchmark]
@@ -95,6 +125,12 @@ public class BenchmarkTarget
     {
         _ = FastEnum.Parse<Target>("A");
     }
+    
+    [Benchmark]
+    public void NET_Parse()
+    {
+        _ = Enum.Parse<Target>("A");
+    }
 
     [Benchmark]
     public void RapidEnum_TryParse()
@@ -106,5 +142,11 @@ public class BenchmarkTarget
     public void FastEnum_TryParse()
     {
         _ = FastEnum.TryParse<Target>("A", out var _);
+    }
+
+    [Benchmark]
+    public void NET_TryParse()
+    {
+        _ = Enum.TryParse<Target>("A", out var _);
     }
 }
