@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: 
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - name: Read and Set Version
@@ -51,7 +52,7 @@ jobs:
           USERNAME: github-actions[bot]
           EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           BRANCH: auto/${{ github.run_id }}/${{ github.run_attempt }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           git config --global user.name "${USERNAME}"
           git config --global user.email "${EMAIL}"
