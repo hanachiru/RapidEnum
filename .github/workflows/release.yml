@@ -50,14 +50,16 @@ jobs:
         env: 
           USERNAME: github-actions[bot]
           EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          BRANCH: auto/${{ github.run_id }}/${{ github.run_attempt }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "${USERNAME}"
           git config --global user.email "${EMAIL}"
+          git switch -c "${BRANCH}"
           git add RapidEnum.NuGet/RapidEnum.nuspec
           git add RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json
-          git commit -m 'Update version'
-          git push
+          git commit -m "Update v${VERSION}"
+          git push origin "${BRANCH}"
           gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes
       - uses: actions/setup-dotnet@v4
         with:
