@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -13,9 +13,10 @@ jobs:
       - name: Read version from nuspec
         id: read_version
         run: |
+          sudo apt install libxml2-utils
           version=$(xmllint --xpath "string(//package/metadata/version)" RapidEnum.NuGet/RapidEnum.nuspec)
           echo "VERSION=${version}" >> $GITHUB_ENV
-      - name: set tag and create release notes
+      - name: Set tag and Create release notes
         env: 
           USERNAME: github-actions[bot]
           EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
