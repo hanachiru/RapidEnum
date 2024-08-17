@@ -43,7 +43,7 @@ https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.ha
 
 # How to use
 ## Basic usage
-Attaching the `[RapidEnum]` to the target enum generates an enum utility class. Note that this is only valid for `public` or `internal` enum.
+Attaching `[RapidEnum]` to the target enum generates an enum utility class. Note that this is only valid for `public` or `internal` enum.
 
 ```csharp
 [RapidEnum]
@@ -56,7 +56,7 @@ public enum Weather
 }
 ```
 
-The `Enumerated type name + EnumExtensions` class defines the relevant methods.
+The `Enum name + EnumExtensions` class defines the relevant methods.
 
 ```csharp
 // Sun,Cloud,Rain,Snow
