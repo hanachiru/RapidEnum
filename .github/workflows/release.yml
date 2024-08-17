@@ -6,8 +6,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Read version from nuspec
@@ -22,11 +20,9 @@ jobs:
           EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git tag "v${VERSION}"
-          git push --force --tags >/dev/null 2>&1
           git config --global user.name "${USERNAME}"
           git config --global user.email "${EMAIL}"
-          gh release create "${VERSION}" --title "${VERSION}" --generate-notes
+          gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
@@ -40,4 +36,4 @@ jobs:
       - name: Publish to NuGet
         working-directory: ./RapidEnum.NuGet
         run: |
-          dotnet nuget push "RapidEnum.NuGet/RapidEnum.NuGet.${VERSION}.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push "RapidEnum.NuGet/RapidEnum.${VERSION}.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
