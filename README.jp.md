@@ -2,23 +2,26 @@
 
 [English](README.md)
 
-RapidEnumは、C#/.NET用の高速に動作する列挙型ユーティリティを提供するソースジェネレーターです。[.NET標準機能](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0)よりも高速で、全てのメソッドでゼロアロケーションを達成しています。
+RapidEnumは、C#/.NET用の高速に動作する列挙型ユーティリティを提供するソースジェネレーターです。[.NET標準のAPI](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0)よりも高速で、全てのメソッドでゼロアロケーションを達成しています。
 
 **Package - [RapidEnum](https://www.nuget.org/packages/RapidEnum)**
 
 ![PerformanceComparison](./Images/PerformanceComparison.png)
 
-[標準API]([.NET標準機能](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0))よりもかなりパフォーマンスが向上されています。また[FastEnum v1.8.0](https://github.com/xin9le/FastEnum/releases/tag/v1.8.0)よりも高速で動作します。パフォーマンス比較の詳細は[こちら](#パフォーマンス比較)を参照してください。
+.NET標準のAPIよりもかなりパフォーマンスが向上されています。また[FastEnum v1.8.0](https://github.com/xin9le/FastEnum/releases/tag/v1.8.0)よりも高速で動作します。パフォーマンス比較の詳細は[こちら](#パフォーマンス比較)を参照してください。
 
 RapidEnumは[FastEnum](https://github.com/xin9le/FastEnum)に多大の影響を受けています。APIはFastEnumに非常に似ています。素晴らしいライブラリを作成してくださった[xin9le](https://github.com/xin9le)さんに感謝しています！
 
-# Table of Contents
+# 目次
 
 - [要件](#要件)
 - [インストール](#インストール)
     - [NuGet](#NuGet)
     - [Unity](#Unity)
 - [使い方](#使い方)
+	- [基本的な使い方](#基本的な使い方)
+	- [任意の列挙型に利用する方法](#任意の列挙型に利用する方法)
+- [パフォーマンス比較](#パフォーマンス比較)
 
 # 要件
 - .NET Standard2.0以上
@@ -31,11 +34,15 @@ $ dotnet add package RapidEnum
 ```
 **nuget.org : [RapidEnum](https://www.nuget.org/packages/RapidEnum)**
 ## Unity
-Package Manager から次の git URL を追加してください：`https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.hanachiru.rapidenum`
+Package Manager から下記 git URL を追加してください。
+```
+https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.hanachiru.rapidenum
+```
+![UPM](./Images/UPM.png)
 
 # 使い方
 ## 基本的な使い方
-対象の列挙型に`[RapidEnum]`属性を付けると、列挙型の拡張メソッドが生成されます。
+対象の列挙型に`[RapidEnum]`属性を付けると、列挙型ユーティリティクラスが生成されます。このとき`public`か`internal`の列挙型に対してのみ有効なので注意してください。
 
 ```csharp
 [RapidEnum]
@@ -48,7 +55,7 @@ public enum Weather
 }
 ```
 
-`[RapidEnum]`属性を付けた列挙型に対して、`列挙型名 + EnumExtensions`クラスに生成されたメソッドが定義されます。
+`[RapidEnum]`属性を付与した列挙型に対応する、`列挙型名 + EnumExtensions`クラスに関連メソッドが定義されます。
 ```csharp
 // Sun,Cloud,Rain,Snow
 IReadOnlyList<Weather> values = WeatherEnumExtensions.GetValues();
@@ -73,13 +80,57 @@ Weather parse = WeatherEnumExtensions.Parse("Sun");
 bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
 ```
 
-## [RapidEnumMarker]を利用した方法
-`[RapidEnum]`属性を列挙型につける以外にも、`[RapidEnumMarker]`属性を付けることで、列挙型に対して拡張メソッドを生成することができます。
+## 任意の列挙型に利用する方法
+`[RapidEnum]`属性を列挙型に付与する以外にも、`[RapidEnumWithType]`属性を利用することで、任意の列挙型に対してユーティリティクラスを生成することができます。
+
+`public`か`internal`である`static partial class`に対して、引数に対象の列挙型を指定した`[RapidEnumWithType]`属性を付与してください。このときクラス名は任意の文字列で大丈夫ですが、`列挙型名 + EnumExtensions`だと分かりやすいです。
 
 ```csharp
+// System.DateTimeKind has Unspecified, Utc, Local
+[RapidEnumWithType(typeof(DateTimeKind))]
+public static partial class DateTimeKindEnumExtensions
+{
+}
+```
 
+`[RapidEnum]`を利用した場合と比べてパフォーマンスに差があるわけではありません。サードパーティ製のライブラリが提供する列挙型など、`[RapidEnum]`が付与できない場合は`[RapidEnumWithType]`を利用してください。
 
+```csharp
+// Unspecified,Utc,Local
+IReadOnlyList<DateTimeKind> values = DateTimeKindEnumExtensions.GetValues();
 
+// Unspecified,Utc,Local
+IReadOnlyList<string> names = DateTimeKindEnumExtensions.GetNames();
+
+// Local
+string name = DateTimeKindEnumExtensions.GetName(DateTimeKind.Local);
+
+// Local
+string str = DateTimeKind.Local.ToStringFast();
+
+// True
+bool defined = DateTimeKindEnumExtensions.IsDefined("Local");
+
+// Local
+DateTimeKind parse = DateTimeKindEnumExtensions.Parse("Local");
+
+// True
+// Local
+bool tryParse = DateTimeKindEnumExtensions.TryParse("Local", out DateTimeKind value);
+```
+
+## NameとValueをペアで取得する
+列挙型のNameとValueをペアで取得したい場合は、`GetMembers`メソッドや`GetMember`メソッドを利用してください。
+
+```csharp
+WeatherEnumExtensions.Member member = WeatherEnumExtensions.GetMember(Weather.Rain);
+var (name, value) = member;
+
+foreach (WeatherEnumExtensions.Member item in WeatherEnumExtensions.GetMembers())
+{
+    Console.WriteLine($"Name : {item.Name}, Value : {item.Value}");
+}
+```
 
 # パフォーマンス比較
 | Method              | Mean       | Error     | StdDev    | Median     | Gen0   | Allocated |
@@ -117,5 +168,3 @@ Apple M2 Pro, 1 CPU, 12 logical and 12 physical cores
 [Host]     : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 DefaultJob : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 ```
-
-# RapidEnum
