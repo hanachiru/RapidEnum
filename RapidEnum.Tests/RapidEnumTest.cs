@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
@@ -9,7 +8,7 @@ namespace RapidEnum.Tests;
 public class RapidEnumTest
 {
     [RapidEnum]
-    public enum Sample
+    internal enum Sample
     {
         A,
         B,

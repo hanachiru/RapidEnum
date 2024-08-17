@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -22,8 +23,10 @@ public class RapidEnumGenerator : IIncrementalGenerator
                     var enumSymbol = context.Attributes
                         .FirstOrDefault(x => x?.AttributeClass?.Name == Constants.MarkerAttributeName)
                         ?.ConstructorArguments.FirstOrDefault().Value as INamedTypeSymbol;
+                    var accessibility = context.TargetSymbol.DeclaredAccessibility;
+                    if (accessibility != Accessibility.Public && accessibility != Accessibility.Internal) return null;
                     var namespaceName = context.TargetSymbol.ContainingNamespace.IsGlobalNamespace ? null : context.TargetSymbol.ContainingNamespace.ToDisplayString();
-                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(enumSymbol, namespaceName);
+                    return enumSymbol == null ? null : new RapidEnumGeneratorContext(enumSymbol, namespaceName, accessibility);
                 }).Where(x => x != null);
 
         context.RegisterSourceOutput(markerProvider, static (context, generationContext) =>
@@ -54,6 +57,10 @@ public class RapidEnumGenerator : IIncrementalGenerator
 
                     var generateStateMachineAttribute = context.Attributes
                         .FirstOrDefault(x => x.AttributeClass?.Name == Constants.AttributeName);
+
+                    if (enumSymbol.DeclaredAccessibility != Accessibility.Public &&
+                        enumSymbol.DeclaredAccessibility != Accessibility.Internal) return null;
+                    
                     return generateStateMachineAttribute != null
                         ? new RapidEnumGeneratorContext(enumSymbol)
                         : null;
@@ -86,7 +93,7 @@ public class RapidEnumGenerator : IIncrementalGenerator
                       $"namespace {context.NameSpace} \n{{" :
                       "")}}}
                       
-                    public static partial class {{{context.ClassName}}}
+                    {{{context.Accessibility}}} static partial class {{{context.ClassName}}}
                     {
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static string ToStringFast(this {{{context.EnumFullName}}} value)

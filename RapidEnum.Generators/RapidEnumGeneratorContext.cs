@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -9,15 +10,23 @@ public class RapidEnumGeneratorContext
     public string ClassName { get; }
     
     public string? NameSpace { get; }
+    public string? Accessibility { get; }
     
     public string EnumFullName { get; }
     public string[] EnumNames { get; }
     
-    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol, string? namespaceName = null)
+    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol, string? namespaceName = null, Accessibility? accessibility = null)
     {
         ClassName = $"{enumSymbol.Name}EnumExtensions";
         GeneratedFileName = $"{ClassName}.g.cs";
-        
+
+        Accessibility = (accessibility ?? enumSymbol.DeclaredAccessibility) switch
+        {
+            Microsoft.CodeAnalysis.Accessibility.Internal => "internal",
+            Microsoft.CodeAnalysis.Accessibility.Public => "public",
+            _ => "public"
+        };
+
         NameSpace = namespaceName ?? (enumSymbol.ContainingNamespace.IsGlobalNamespace ? null : enumSymbol.ContainingNamespace.ToDisplayString());
         
         EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
