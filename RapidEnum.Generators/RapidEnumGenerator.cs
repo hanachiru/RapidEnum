@@ -151,6 +151,12 @@ public class RapidEnumGenerator : IIncrementalGenerator
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<string> GetNames() => CacheNames;
                         
+                        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                        public static string GetName({{{context.EnumFullName}}} value)
+                        {
+                            return value.ToStringFast();
+                        }
+                        
                         private static readonly ReadOnlyCollection<Member> CacheMembers = new[]
                         {
                             {{{
@@ -160,6 +166,12 @@ public class RapidEnumGenerator : IIncrementalGenerator
                       
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<Member> GetMembers() => CacheMembers;
+                        
+                        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                        public static Member GetMember({{{context.EnumFullName}}} value)
+                        {
+                            return value.ToMember();
+                        }
                         
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static Member ToMember(this {{{context.EnumFullName}}} value)
@@ -177,6 +189,16 @@ public class RapidEnumGenerator : IIncrementalGenerator
                                 Name = name;
                                 Value = value;
                             }
+                        }
+                        
+                        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                        public static {{{context.EnumFullName}}} Parse(string name, bool ignoreCase = false)
+                        {
+                            if (TryParse(name, out var value, ignoreCase))
+                            {
+                                return value;
+                            }
+                            throw new ArgumentException($"The value '{name}' is not defined in enum '{{{context.EnumFullName}}}'.");
                         }
                         
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]

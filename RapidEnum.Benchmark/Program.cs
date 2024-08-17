@@ -49,6 +49,18 @@ public class BenchmarkTarget
     }
 
     [Benchmark]
+    public void RapidEnum_GetName()
+    {
+        _ = TargetEnumExtensions.GetName(Target.B);
+    }
+
+    [Benchmark]
+    public void FastEnum_GetName()
+    {
+        _ = FastEnum.GetName<Target>(Target.B);
+    }
+
+    [Benchmark]
     public void RapidEnum_ToString()
     {
         _ = Target.A.ToStringFast();
@@ -70,6 +82,18 @@ public class BenchmarkTarget
     public void FastEnum_IsDefines()
     {
         _ = FastEnum.IsDefined<Target>("2");
+    }
+
+    [Benchmark]
+    public void RapidEnum_Parse()
+    {
+        _ = TargetEnumExtensions.Parse("A");
+    }
+
+    [Benchmark]
+    public void FastEnum_Parse()
+    {
+        _ = FastEnum.Parse<Target>("A");
     }
 
     [Benchmark]

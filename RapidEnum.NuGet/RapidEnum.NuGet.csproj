@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <NuspecFile>RapidEnum.nuspec</NuspecFile>
+    <NuspecProperties>
+        Configuration=$(Configuration);
+    </NuspecProperties>
+    <Description>Enum utility with SourceGenerator for C#/.NET.</Description>
+    <RepositoryUrl>https://github.com/hanachiru/RapidEnum</RepositoryUrl>
+</PropertyGroup>
+
+<ItemGroup>
+    <ProjectReference Include="..\RapidEnum.Generators\RapidEnum.Generators.csproj" Private="true"/>
+    <ProjectReference Include="..\RapidEnum.Core\RapidEnum.Core.csproj" Private="true"/>
+</ItemGroup>
+
+</Project>
