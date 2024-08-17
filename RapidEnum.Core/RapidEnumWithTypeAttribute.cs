@@ -3,11 +3,11 @@ using System;
 namespace RapidEnum;
 
 [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-public sealed class RapidEnumMarkerAttribute : Attribute
+public sealed class RapidEnumWithTypeAttribute : Attribute
 {
     public Type Type { get; }
 
-    public RapidEnumMarkerAttribute(Type type)
+    public RapidEnumWithTypeAttribute(Type type)
     {
         Type = type;
     }

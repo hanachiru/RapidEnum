@@ -5,7 +5,7 @@ using NUnit.Framework.Legacy;
 
 namespace RapidEnum.Tests;
 
-[RapidEnumMarker(typeof(DateTimeKind))]
+[RapidEnumWithType(typeof(DateTimeKind))]
 internal static partial class DateTimeKindEnumExtensions { }
 
 [TestFixture]

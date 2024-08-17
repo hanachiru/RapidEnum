@@ -5,7 +5,7 @@ using NUnit.Framework.Legacy;
 
 namespace RapidEnum.Tests;
 
-[RapidEnumMarker(typeof(JsonTokenType))]
+[RapidEnumWithType(typeof(JsonTokenType))]
 internal static partial class JsonTokenTypeEnumExtensions { }
 
 [TestFixture]

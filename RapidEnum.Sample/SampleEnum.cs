@@ -41,12 +41,12 @@ public class SampleEnum
     }
 
 
-    [RapidEnumMarker(typeof(DateTimeKind))]
+    [RapidEnumWithType(typeof(DateTimeKind))]
     public static partial class DateTimeKindEnumExtensions
     {
     }
 
-    [RapidEnumMarker(typeof(JsonTokenType))]
+    [RapidEnumWithType(typeof(JsonTokenType))]
     public static partial class JsonTokenTypeEnumExtensions
     {
     }
