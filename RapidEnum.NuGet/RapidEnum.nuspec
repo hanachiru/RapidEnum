@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+    <metadata>
+        <id>RapidEnum</id>
+        <version>0.0.1</version>
+        <authors>hanachiru</authors>
+        <description>
+            Enum utility with SourceGenerator for C#/.NET
+        </description>
+        <repository type="git" url="https://github.com/hanachiru/RapidEnum" />
+        <dependencies>
+            <group targetFramework=".NETStandard2.0"/>
+        </dependencies>
+        <readme>README.md</readme>
+        <license type="expression">MIT</license>
+    </metadata>
+    <files>
+        <file target="\" src="..\README.md"/>
+        <file target="lib\netstandard2.0\" src="bin\Release\netstandard2.0\RapidEnum.Core.dll"/>
+        <file target="analyzers\dotnet\cs\" src="bin\Release\netstandard2.0\RapidEnum.Generators.dll"/>
+    </files>
+</package>
