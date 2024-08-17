@@ -61,7 +61,7 @@ jobs:
           message="Update v${VERSION}"
           git commit -m "${message}"
           git push origin "${BRANCH}"
-          git pr create --head "${BRANCH}" --title "${message}" --body "${message}"
+          gh pr create --head "${BRANCH}" --title "${message}" --body "${message}"
           gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes
       - uses: actions/setup-dotnet@v4
         with:
