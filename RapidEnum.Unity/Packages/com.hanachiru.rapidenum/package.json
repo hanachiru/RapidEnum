@@ -1,6 +1,6 @@
 {
   "name": "com.hanachiru.rapidenum",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "displayName": "Rapid Enum",
   "description": "Enum utility with SourceGenerator for C#/.NET",
   "unity": "2022.3",

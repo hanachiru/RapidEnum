@@ -51,7 +51,7 @@ jobs:
         run: |
           NEW_VERSION="${VERSION}"
           jq --arg new_version "$NEW_VERSION" '.version = $new_version' RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json > tmp.$$.json && mv tmp.$$.json RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json
-      - name: Set tag and Create release notes
+      - name: Push and Create release notes
         env: 
           USERNAME: github-actions[bot]
           EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
@@ -59,6 +59,10 @@ jobs:
         run: |
           git config --global user.name "${USERNAME}"
           git config --global user.email "${EMAIL}"
+          git add RapidEnum.NuGet/RapidEnum.nuspec
+          git add RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json
+          git commit -m 'Update version'
+          git push
           gh release create "v${VERSION}" --title "v${VERSION}" --generate-notes
       - uses: actions/setup-dotnet@v4
         with:

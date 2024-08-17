@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>RapidEnum</id>
-        <version>0.0.2</version>
+        <version>0.1.0</version>
         <authors>hanachiru</authors>
         <description>
             Enum utility with SourceGenerator for C#/.NET
