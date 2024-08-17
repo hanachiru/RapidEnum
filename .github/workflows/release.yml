@@ -2,6 +2,12 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      bump-level:
+        type: choice
+        options: [major, minor, patch]
+        required: true
+        description: 'The level of version bump to apply'
 
 jobs:
   release:
@@ -12,10 +18,29 @@ jobs:
       - uses: actions/checkout@v4
       - name: Read version from nuspec
         id: read_version
+        env:
+          BUMP_LEVEL: ${{ github.event.inputs.bump-level }}
         run: |
+          # get version
           sudo apt install libxml2-utils
           version=$(xmllint --xpath "string(//package/metadata/version)" RapidEnum.NuGet/RapidEnum.nuspec)
-          echo "VERSION=${version}" >> $GITHUB_ENV
+          
+          # bump version
+          IFS='.' read -ra tokens <<< "${version:-0.0.0}"
+          major="${tokens[0]}"
+          minor="${tokens[1]}"
+          patch="${tokens[2]}"
+          case "${BUMP_LEVEL}" in
+            major) major="$((major + 1))"; minor=0; patch=0 ;;
+            minor) minor="$((minor + 1))"; patch=0 ;;
+            patch) patch="$((patch + 1))" ;;
+          esac
+          
+          new_version="${major}.${minor}.${patch}"
+          echo "VERSION=${new_version}" >> $GITHUB_ENV
+      - name: Update nuspec version
+        run: |
+          sed -i "s/<version>.*<\/version>/<version>${VERSION}<\/version>/" RapidEnum.NuGet/RapidEnum.nuspec
       - name: Set tag and Create release notes
         env: 
           USERNAME: github-actions[bot]
