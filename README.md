@@ -18,6 +18,7 @@ RapidEnum is heavily influenced by [FastEnum](https://github.com/xin9le/FastEnum
 - [Installation](#Installation)
   - [NuGet](#NuGet)
   - [Unity](#Unity)
+    - [asmdef settings](#asmdef-settings)
 - [How to use](#How-to-use)
   - [Basic usage](#Basic-usage)
   - [How to use it for any enum](#How-to-use-it-for-any-enum)
@@ -47,6 +48,13 @@ https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.ha
 ```
 
 ![UPM](./Images/UPM.png)
+
+### asmdef settings
+If you have not created `.asmdef`, the following is not relevant.
+
+If you have `Override References` in the `.asmdef` switched on, you need to add `RapidEnum.Core.dll` to the `Assembly References`.
+
+<img src="./Images/AssemblyReferences.png" width="300" />
 
 # How to use
 

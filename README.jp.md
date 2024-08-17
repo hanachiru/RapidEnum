@@ -18,6 +18,7 @@ RapidEnum は[FastEnum](https://github.com/xin9le/FastEnum)に多大の影響を
 - [インストール](#インストール)
   - [NuGet](#NuGet)
   - [Unity](#Unity)
+	- [asmdefの設定](#asmdefの設定)
 - [使い方](#使い方)
   - [基本的な使い方](#基本的な使い方)
   - [任意の列挙型に利用する方法](#任意の列挙型に利用する方法)
@@ -47,6 +48,13 @@ https://github.com/hanachiru/RapidEnum.git?path=/RapidEnum.Unity/Packages/com.ha
 ```
 
 ![UPM](./Images/UPM.png)
+
+### asmdefの設定
+`.asmdef`を作成していない場合は下記は関係ありません。
+
+`.asmdef`の`Override References`をオンにしている場合には、`Assembly References`に`RapidEnum.Core.dll`を追加する必要があります。
+
+<img src="./Images/AssemblyReferences.png" width="300" />
 
 # 使い方
 
