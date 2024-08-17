@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Read version from nuspec
+      - name: Read and Set Version
         id: read_version
         env:
           BUMP_LEVEL: ${{ github.event.inputs.bump-level }}
