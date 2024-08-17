@@ -575,3 +575,5 @@ sysinfo.txt
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider,macos,unity
+
+!/Packages/com.hanachiru.rapidenum/

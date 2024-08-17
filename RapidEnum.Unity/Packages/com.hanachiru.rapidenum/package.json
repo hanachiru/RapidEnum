@@ -1,0 +1,15 @@
+{
+  "name": "com.hanachiru.rapidenum",
+  "version": "0.0.3",
+  "displayName": "Rapid Enum",
+  "description": "Subscribe C# events with IDisposable!",
+  "unity": "2022.3",
+  "unityRelease": "12f1",
+  "dependencies": {
+  },
+  "keywords": [],
+  "author": {
+    "name": "hanachiru",
+    "url": "https://github.com/hanachiru"
+  }
+}

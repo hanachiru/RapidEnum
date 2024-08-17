@@ -23,5 +23,10 @@
         <ProjectReference Include="..\RapidEnum.Core\RapidEnum.Core.csproj" />
     </ItemGroup>
 
-
+    <Target Name="DllCopy" AfterTargets="AfterBuild">
+        <Message Text="OutputPath : $(OutputPath)"  Importance="high" />
+        <Message Text="MSBuildThisFileDirectory : $(MSBuildThisFileDirectory)" Importance="high" />
+        <Copy SourceFiles="$(OutputPath)/RapidEnum.Core.dll" DestinationFolder="$(MSBuildThisFileDirectory)../RapidEnum.Unity/Packages/com.hanachiru.rapidenum/netstandard2.0" />
+        <Copy SourceFiles="$(OutputPath)/RapidEnum.Generators.dll" DestinationFolder="$(MSBuildThisFileDirectory)../RapidEnum.Unity/Packages/com.hanachiru.rapidenum/netstandard2.0" />
+    </Target>
 </Project>
