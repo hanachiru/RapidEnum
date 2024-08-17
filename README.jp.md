@@ -116,7 +116,18 @@ DateTimeKind parse = DateTimeKindEnumExtensions.Parse("Local");
 bool tryParse = DateTimeKindEnumExtensions.TryParse("Local", out DateTimeKind value);
 ```
 
-## 任意のTypeに利用する方法
+## NameとValueをペアで取得する
+列挙型のNameとValueをペアで取得したい場合は、`GetMembers`メソッドや`GetMember`メソッドを利用してください。
+
+```csharp
+WeatherEnumExtensions.Member member = WeatherEnumExtensions.GetMember(Weather.Rain);
+var (name, value) = member;
+
+foreach (WeatherEnumExtensions.Member item in WeatherEnumExtensions.GetMembers())
+{
+    Console.WriteLine($"Name : {item.Name}, Value : {item.Value}");
+}
+```
 
 # パフォーマンス比較
 | Method              | Mean       | Error     | StdDev    | Median     | Gen0   | Allocated |
@@ -154,5 +165,3 @@ Apple M2 Pro, 1 CPU, 12 logical and 12 physical cores
 [Host]     : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 DefaultJob : .NET 8.0.7 (8.0.724.31311), Arm64 RyuJIT AdvSIMD
 ```
-
-# RapidEnum
