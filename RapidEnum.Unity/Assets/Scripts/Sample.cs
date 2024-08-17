@@ -15,39 +15,39 @@ public class Sample : MonoBehaviour
 
     public void Start()
     {
-        // Sun,Cloud,Rain,Snow
+        // Sunny,Rainy,Cloudy,Snowy
         IReadOnlyList<Weather> values = WeatherEnumExtensions.GetValues();
         
         Debug.Log(string.Join(",", values));
 
-        // Sun,Cloud,Rain,Snow
+        // Sunny,Rainy,Cloudy,Snowy
         IReadOnlyList<string> names = WeatherEnumExtensions.GetNames();
         
         Debug.Log(string.Join(",", names));
 
-        // Rain
+        // Rainy
         string name = WeatherEnumExtensions.GetName(Weather.Rainy);
         
         Debug.Log(name);
 
-        // Cloud
+        // Cloudy
         string str = Weather.Cloudy.ToStringFast();
         
         Debug.Log(str);
 
         // True
-        bool defined = WeatherEnumExtensions.IsDefined("Sun");
+        bool defined = WeatherEnumExtensions.IsDefined("Sunny");
         
         Debug.Log(defined);
 
-        // Sun
-        Weather parse = WeatherEnumExtensions.Parse("Sun");
+        // Sunny
+        Weather parse = WeatherEnumExtensions.Parse("Sunny");
         
         Debug.Log(parse);
 
         // True
-        // Sun
-        bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
+        // Sunny
+        bool tryParse = WeatherEnumExtensions.TryParse("Sunny", out Weather value);
         
         Debug.Log(tryParse);
         Debug.Log(value);

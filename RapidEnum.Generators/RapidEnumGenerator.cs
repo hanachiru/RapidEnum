@@ -134,22 +134,22 @@ public class RapidEnumGenerator : IIncrementalGenerator
                             };
                         }
                         
-                        private static readonly ReadOnlyCollection<{{{context.EnumFullName}}}> CacheValues = new[]
+                        private static readonly ReadOnlyCollection<{{{context.EnumFullName}}}> CacheValues = new ReadOnlyCollection<{{{context.EnumFullName}}}>(new[]
                         {
                             {{{
                                 string.Join("\n          ", context.EnumNames.Select(x => $"{x},"))
                             }}}
-                        }.AsReadOnly();
+                        });
                         
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<{{{context.EnumFullName}}}> GetValues() => CacheValues;
                     
-                        private static readonly ReadOnlyCollection<string> CacheNames = new[]
+                        private static readonly ReadOnlyCollection<string> CacheNames = new ReadOnlyCollection<string>(new[]
                         {
                             {{{
                                 string.Join("\n          ", context.EnumNames.Select(x => $"nameof({x}),"))
                             }}}
-                        }.AsReadOnly();
+                        });
                         
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<string> GetNames() => CacheNames;
@@ -160,12 +160,12 @@ public class RapidEnumGenerator : IIncrementalGenerator
                             return value.ToStringFast();
                         }
                         
-                        private static readonly ReadOnlyCollection<Member> CacheMembers = new[]
+                        private static readonly ReadOnlyCollection<Member> CacheMembers =  new ReadOnlyCollection<Member>(new[]
                         {
                             {{{
                                 string.Join("\n          ", context.EnumNames.Select(x => $"new Member(nameof({x}), {x}),"))
                             }}}
-                        }.AsReadOnly();
+                        });
                       
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<Member> GetMembers() => CacheMembers;
