@@ -16,6 +16,12 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7.1.0
       - name: Read and Set Version
         id: read_version
         env:
@@ -41,6 +47,10 @@ jobs:
       - name: Update nuspec version
         run: |
           sed -i "s/<version>.*<\/version>/<version>${VERSION}<\/version>/" RapidEnum.NuGet/RapidEnum.nuspec
+      - name: Update package.json version
+        run: |
+          NEW_VERSION="${VERSION}"
+          jq --arg new_version "$NEW_VERSION" '.version = $new_version' RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json > tmp.$$.json && mv tmp.$$.json RapidEnum.Unity/Packages/com.hanachiru.rapidenum/package.json
       - name: Set tag and Create release notes
         env: 
           USERNAME: github-actions[bot]

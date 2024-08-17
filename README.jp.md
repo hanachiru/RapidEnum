@@ -10,7 +10,7 @@ RapidEnumは、C#/.NET用の高速に動作する列挙型ユーティリティ�
 
 [標準API]([.NET標準機能](https://learn.microsoft.com/en-us/dotnet/api/system.enum?view=net-8.0))よりもかなりパフォーマンスが向上されています。また[FastEnum v1.8.0](https://github.com/xin9le/FastEnum/releases/tag/v1.8.0)よりも高速で動作します。パフォーマンス比較の詳細は[こちら](#パフォーマンス比較)を参照してください。
 
-RapidEnumは[FastEnum](https://github.com/xin9le/FastEnum)は多大に影響を受けています。APIはFastEnumに非常に似ています。素晴らしいライブラリを作成してくださった[xin9le](https://github.com/xin9le)さんに感謝しています！
+RapidEnumは[FastEnum](https://github.com/xin9le/FastEnum)に多大の影響を受けています。APIはFastEnumに非常に似ています。素晴らしいライブラリを作成してくださった[xin9le](https://github.com/xin9le)さんに感謝しています！
 
 # Table of Contents
 
