@@ -38,4 +38,4 @@ jobs:
       - name: Publish to NuGet
         working-directory: ./RapidEnum.NuGet
         run: |
-          dotnet nuget push "RapidEnum.NuGet/RapidEnum.${VERSION}.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push "RapidEnum.${VERSION}.nupkg" --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
