@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
@@ -73,6 +75,34 @@ public class RapidEnumTest
             nameof(Sample.B),
             nameof(Sample.C),
         });
+    }
+
+    [Test]
+    public void GetMembersPassTest()
+    {
+        var members = SampleEnumExtensions.GetMembers();
+        
+        CollectionAssert.AreEqual(members.Select(x => x.Name), new[]
+        {
+            nameof(Sample.A),
+            nameof(Sample.B),
+            nameof(Sample.C),
+        });
+        CollectionAssert.AreEqual(members.Select(x => x.Value), new[]
+        {
+            Sample.A,
+            Sample.B,
+            Sample.C,
+        });
+    }
+
+    [Test]
+    public void ToMemberPassTest()
+    {
+        var member = Sample.A.ToMember();
+
+        Assert.That(member.Name, Is.EqualTo(nameof(Sample.A)));
+        Assert.That(member.Value, Is.EqualTo(Sample.A));
     }
 
     [Test]

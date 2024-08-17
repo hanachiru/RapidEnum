@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
@@ -55,6 +56,34 @@ public class RapidEnumTestWithSystem
             nameof(DateTimeKind.Utc),
             nameof(DateTimeKind.Local),
         });
+    }
+    
+    [Test]
+    public void GetMembersPassTest()
+    {
+        var members = DateTimeKindEnumExtensions.GetMembers();
+        
+        CollectionAssert.AreEqual(members.Select(x => x.Name), new[]
+        {
+            nameof(DateTimeKind.Unspecified),
+            nameof(DateTimeKind.Utc),
+            nameof(DateTimeKind.Local),
+        });
+        CollectionAssert.AreEqual(members.Select(x => x.Value), new[]
+        {
+            DateTimeKind.Unspecified,
+            DateTimeKind.Utc,
+            DateTimeKind.Local
+        });
+    }
+
+    [Test]
+    public void ToMemberPassTest()
+    {
+        var member = DateTimeKind.Unspecified.ToMember();
+
+        Assert.That(member.Name, Is.EqualTo(nameof(DateTimeKind.Unspecified)));
+        Assert.That(member.Value, Is.EqualTo(DateTimeKind.Unspecified));
     }
     
     [Test]

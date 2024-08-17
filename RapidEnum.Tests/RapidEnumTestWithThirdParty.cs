@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Text.Json;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
@@ -73,6 +74,52 @@ public class RapidEnumTestWithThirdParty
             nameof(JsonTokenType.False),
             nameof(JsonTokenType.Null),
         });
+    }
+
+    [Test]
+    public void GetMembersPassTest()
+    {
+        var members = JsonTokenTypeEnumExtensions.GetMembers();
+
+        CollectionAssert.AreEqual(members.Select(x => x.Name), new[]
+        {
+            nameof(JsonTokenType.None),
+            nameof(JsonTokenType.StartObject),
+            nameof(JsonTokenType.EndObject),
+            nameof(JsonTokenType.StartArray),
+            nameof(JsonTokenType.EndArray),
+            nameof(JsonTokenType.PropertyName),
+            nameof(JsonTokenType.Comment),
+            nameof(JsonTokenType.String),
+            nameof(JsonTokenType.Number),
+            nameof(JsonTokenType.True),
+            nameof(JsonTokenType.False),
+            nameof(JsonTokenType.Null),
+        });
+        CollectionAssert.AreEqual(members.Select(x => x.Value), new[]
+        {
+            JsonTokenType.None,
+            JsonTokenType.StartObject,
+            JsonTokenType.EndObject,
+            JsonTokenType.StartArray,
+            JsonTokenType.EndArray,
+            JsonTokenType.PropertyName,
+            JsonTokenType.Comment,
+            JsonTokenType.String,
+            JsonTokenType.Number,
+            JsonTokenType.True,
+            JsonTokenType.False,
+            JsonTokenType.Null,
+        });
+    }
+
+    [Test]
+    public void ToMemberPassTest()
+    {
+        var member = JsonTokenType.Comment.ToMember();
+
+        Assert.That(member.Name, Is.EqualTo(nameof(JsonTokenType.Comment)));
+        Assert.That(member.Value, Is.EqualTo(JsonTokenType.Comment));
     }
 
     [Test]

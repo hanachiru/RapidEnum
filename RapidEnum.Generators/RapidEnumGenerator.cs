@@ -144,6 +144,34 @@ public class RapidEnumGenerator : IIncrementalGenerator
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static IReadOnlyList<string> GetNames() => CacheNames;
                         
+                        private static readonly ReadOnlyCollection<Member> CacheMembers = new[]
+                        {
+                            {{{
+                                string.Join("\n          ", context.EnumNames.Select(x => $"new Member(nameof({x}), {x}),"))
+                            }}}
+                        }.AsReadOnly();
+                      
+                        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                        public static IReadOnlyList<Member> GetMembers() => CacheMembers;
+                        
+                        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                        public static Member ToMember(this {{{context.EnumFullName}}} value)
+                        {
+                            return new Member(ToStringFast(value), value);
+                        }
+                      
+                        public sealed class Member
+                        {
+                            public {{{context.EnumFullName}}} Value { get; }
+                            public string Name { get; }
+                
+                            internal Member(string name, {{{context.EnumFullName}}} value)
+                            {
+                                Name = name;
+                                Value = value;
+                            }
+                        }
+                        
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
                         public static bool TryParse(
                             string name,
