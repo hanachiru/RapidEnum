@@ -578,6 +578,9 @@ sysinfo.txt
 
 !/Packages/com.hanachiru.rapidenum/
 !/Packages/com.hanachiru.rapidenum/netstandard2.0/
+!/Packages/com.hanachiru.rapidenum/netstandard2.0.meta
+!/Packages/com.hanachiru.rapidenum/package.json
+!/Packages/com.hanachiru.rapidenum/package.json.meta
 !/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Core.dll
 !/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Core.dll.meta
 !/Packages/com.hanachiru.rapidenum/netstandard2.0/RapidEnum.Generators.dll
