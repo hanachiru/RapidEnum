@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -14,25 +13,50 @@ public class RapidEnumGeneratorContext
     
     public string EnumFullName { get; }
     public string[] EnumNames { get; }
-    
-    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol, string? namespaceName = null, Accessibility? accessibility = null)
+
+    public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol)
     {
         ClassName = $"{enumSymbol.Name}EnumExtensions";
         GeneratedFileName = $"{ClassName}.g.cs";
 
-        Accessibility = (accessibility ?? enumSymbol.DeclaredAccessibility) switch
+        Accessibility = GetAccessibilityName(enumSymbol.DeclaredAccessibility);
+        NameSpace = enumSymbol.ContainingNamespace.IsGlobalNamespace
+            ? null
+            : enumSymbol.ContainingNamespace.ToDisplayString();
+
+        EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        EnumNames = GetEnumNames(enumSymbol);
+    }
+
+    public RapidEnumGeneratorContext(INamedTypeSymbol targetSymbol, INamedTypeSymbol enumSymbol)
+    {
+        ClassName = targetSymbol.Name;
+        GeneratedFileName = $"{ClassName}.g.cs";
+        
+        NameSpace = targetSymbol.ContainingNamespace.IsGlobalNamespace
+            ? null
+            : targetSymbol.ContainingNamespace.ToDisplayString();
+        Accessibility = GetAccessibilityName(targetSymbol.DeclaredAccessibility);
+
+        EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        EnumNames = GetEnumNames(enumSymbol);
+    }
+
+    private static string GetAccessibilityName(Accessibility accessibility)
+    {
+        return accessibility switch
         {
             Microsoft.CodeAnalysis.Accessibility.Internal => "internal",
             Microsoft.CodeAnalysis.Accessibility.Public => "public",
             _ => "public"
         };
-
-        NameSpace = namespaceName ?? (enumSymbol.ContainingNamespace.IsGlobalNamespace ? null : enumSymbol.ContainingNamespace.ToDisplayString());
-        
-        EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        EnumNames = enumSymbol.GetMembers()
+    }
+    
+    private static string[] GetEnumNames(INamedTypeSymbol enumSymbol)
+    {
+        return enumSymbol.GetMembers()
             .Where(x => x.Kind == SymbolKind.Field && x is IFieldSymbol { HasConstantValue: true })
             .Select(x => x.ToDisplayString())
             .ToArray();
-    }   
+    }
 }
