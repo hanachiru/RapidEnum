@@ -103,7 +103,7 @@ bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
 
 The `[RapidEnumWithType]` can be used to generate utility classes for any enum.
 
-For `static partial classes` that are `public` or `internal`, give them a `[RapidEnumWithType]` with the target enum as an argument. The class name can be any string, but `Enum name + EnumExtensions` is easier to understand.
+For `static partial class` that are `public` or `internal`, give them a `[RapidEnumWithType]` with the target enum as an argument. The class name can be any string, but `Enum name + EnumExtensions` is easier to understand.
 
 ```csharp
 // System.DateTimeKind has Unspecified, Utc, Local
