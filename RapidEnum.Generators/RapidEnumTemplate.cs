@@ -204,7 +204,7 @@ public static class RapidEnumTemplate
                             }
                         }
                         
-                        private static readonly Type CacheUnderlyingType = Enum.GetUnderlyingType(typeof({{{context.EnumFullName}}}));
+                        private static readonly Type CacheUnderlyingType = System.Enum.GetUnderlyingType(typeof({{{context.EnumFullName}}}));
                         public static Type GetUnderlyingType() => CacheUnderlyingType;
                         
                         [MethodImpl(MethodImplOptions.AggressiveInlining)]
