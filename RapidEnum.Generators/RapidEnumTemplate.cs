@@ -48,7 +48,7 @@ public static class RapidEnumTemplate
                             return value switch
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Select(x => $"{x} => nameof({x}),"))
+                                    string.Join("\n              ", context.EnumNames.Select(x => $"global::{x} => nameof(global::{x}),"))
                                 }}}
                                 _ => value.ToString()
                             };
@@ -60,7 +60,7 @@ public static class RapidEnumTemplate
                             return value switch
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Select(x => $"{x} => true,"))
+                                    string.Join("\n              ", context.EnumNames.Select(x => $"global::{x} => true,"))
                                 }}}
                                 _ => false,
                             };
@@ -72,7 +72,7 @@ public static class RapidEnumTemplate
                             return name switch
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Select(x => $"nameof({x}) => true,"))
+                                    string.Join("\n              ", context.EnumNames.Select(x => $"nameof(global::{x}) => true,"))
                                 }}}
                                 _ => false,
                             };
@@ -81,7 +81,7 @@ public static class RapidEnumTemplate
                         private static readonly global::System.Collections.ObjectModel.ReadOnlyCollection<{{{context.EnumFullName}}}> CacheValues = new global::System.Collections.ObjectModel.ReadOnlyCollection<{{{context.EnumFullName}}}>(new[]
                         {
                             {{{
-                                string.Join("\n          ", context.EnumNames.Select(x => $"{x},"))
+                                string.Join("\n          ", context.EnumNames.Select(x => $"global::{x},"))
                             }}}
                         });
                         
@@ -91,7 +91,7 @@ public static class RapidEnumTemplate
                         private static readonly global::System.Collections.ObjectModel.ReadOnlyCollection<string> CacheNames = new global::System.Collections.ObjectModel.ReadOnlyCollection<string>(new[]
                         {
                             {{{
-                                string.Join("\n          ", context.EnumNames.Select(x => $"nameof({x}),"))
+                                string.Join("\n          ", context.EnumNames.Select(x => $"nameof(global::{x}),"))
                             }}}
                         });
                         
@@ -107,7 +107,7 @@ public static class RapidEnumTemplate
                         private static readonly global::System.Collections.ObjectModel.ReadOnlyCollection<Member> CacheMembers =  new global::System.Collections.ObjectModel.ReadOnlyCollection<Member>(new[]
                         {
                             {{{
-                                string.Join("\n          ", context.EnumNames.Select(x => $"new Member(nameof({x}), {x}),"))
+                                string.Join("\n          ", context.EnumNames.Select(x => $"new Member(nameof(global::{x}), global::{x}),"))
                             }}}
                         });
                       
@@ -170,7 +170,7 @@ public static class RapidEnumTemplate
                             switch (name)
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Select(x => $"case not null when name.Equals(nameof({x}), global::System.StringComparison.OrdinalIgnoreCase):\n                  value = {x};\n                  return true;"))
+                                    string.Join("\n              ", context.EnumNames.Select(x => $"case not null when name.Equals(nameof(global::{x}), global::System.StringComparison.OrdinalIgnoreCase):\n                  value = global::{x};\n                  return true;"))
                                 }}}
                                 case not null when int.TryParse(name, out var val):
                                     value = ({{{context.EnumFullName}}})val;
@@ -188,7 +188,7 @@ public static class RapidEnumTemplate
                             switch (name)
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Select(x => $"case nameof({x}):\n                   value = {x};\n                  return true;"))
+                                    string.Join("\n              ", context.EnumNames.Select(x => $"case nameof(global::{x}):\n                   value = global::{x};\n                  return true;"))
                                 }}}
                                 case not null when int.TryParse(name, out var val):
                                     value = ({{{context.EnumFullName}}})val;
@@ -208,7 +208,7 @@ public static class RapidEnumTemplate
                             return value switch
                             {
                                 {{{
-                                    string.Join("\n              ", context.EnumNames.Zip(context.EnumMemberValues, (x, y) => $"{x} => {(y == null ? "null" : "\"" + y + "\"")},"))
+                                    string.Join("\n              ", context.EnumNames.Zip(context.EnumMemberValues, (x, y) => $"global::{x} => {(y == null ? "null" : "\"" + y + "\"")},"))
                                 }}}
                                 _ => null
                             };
