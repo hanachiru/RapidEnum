@@ -7,7 +7,7 @@
         <description>
             Enum utility with SourceGenerator for C#/.NET
         </description>
-        <repository type="git" url="https://github.com/hanachiru/RapidEnum" />
+        <repository type="git" url="https://github.com/hanachiru/RapidEnum"/>
         <dependencies>
             <group targetFramework=".NETStandard2.0"/>
         </dependencies>

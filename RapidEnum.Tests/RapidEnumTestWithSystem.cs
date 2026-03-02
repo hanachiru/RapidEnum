@@ -6,7 +6,9 @@ using NUnit.Framework.Legacy;
 namespace RapidEnum.Tests;
 
 [RapidEnumWithType(typeof(DateTimeKind))]
-internal static partial class DateTimeKindEnumExtensions { }
+internal static partial class DateTimeKindEnumExtensions
+{
+}
 
 [TestFixture]
 public class RapidEnumTestWithSystem
@@ -14,7 +16,7 @@ public class RapidEnumTestWithSystem
     [Test]
     public void ToStringFastPassTest()
     {
-        Assert.That(DateTimeKind.Utc.ToStringFast(), Is.EqualTo(nameof(DateTimeKind.Utc))); 
+        Assert.That(DateTimeKind.Utc.ToStringFast(), Is.EqualTo(nameof(DateTimeKind.Utc)));
         Assert.That(((DateTimeKind)10).ToStringFast(), Is.EqualTo("10"));
     }
 
@@ -24,19 +26,19 @@ public class RapidEnumTestWithSystem
         Assert.That(DateTimeKindEnumExtensions.IsDefined(DateTimeKind.Local), Is.EqualTo(true));
         Assert.That(DateTimeKindEnumExtensions.IsDefined((DateTimeKind)int.MaxValue), Is.EqualTo(false));
     }
-    
+
     [Test]
     public void IsDefinedUsingNamePassTest()
     {
         Assert.That(DateTimeKindEnumExtensions.IsDefined(nameof(DateTimeKind.Local)), Is.EqualTo(true));
         Assert.That(DateTimeKindEnumExtensions.IsDefined("10"), Is.EqualTo(false));
     }
-    
+
     [Test]
     public void GetValuesPassTest()
     {
         var values = DateTimeKindEnumExtensions.GetValues();
-    
+
         CollectionAssert.AreEqual(values, new[]
         {
             DateTimeKind.Unspecified,
@@ -44,12 +46,12 @@ public class RapidEnumTestWithSystem
             DateTimeKind.Local
         });
     }
-    
+
     [Test]
     public void GetNamesPassTest()
     {
         var values = DateTimeKindEnumExtensions.GetNames();
-    
+
         CollectionAssert.AreEqual(values, new[]
         {
             nameof(DateTimeKind.Unspecified),
@@ -57,12 +59,12 @@ public class RapidEnumTestWithSystem
             nameof(DateTimeKind.Local),
         });
     }
-    
+
     [Test]
     public void GetMembersPassTest()
     {
         var members = DateTimeKindEnumExtensions.GetMembers();
-        
+
         CollectionAssert.AreEqual(members.Select(x => x.Name), new[]
         {
             nameof(DateTimeKind.Unspecified),
@@ -85,7 +87,7 @@ public class RapidEnumTestWithSystem
         Assert.That(member.Name, Is.EqualTo(nameof(DateTimeKind.Unspecified)));
         Assert.That(member.Value, Is.EqualTo(DateTimeKind.Unspecified));
     }
-    
+
     [Test]
     public void TryParsePassTest()
     {
@@ -110,7 +112,7 @@ public class RapidEnumTestWithSystem
             }
         }
     }
-    
+
     [Test]
     public void TryParseIgnoreCasePassTest()
     {
@@ -135,7 +137,7 @@ public class RapidEnumTestWithSystem
             }
         }
     }
-    
+
     [Test]
     public void GetUnderlyingTypeTest()
     {
@@ -146,7 +148,7 @@ public class RapidEnumTestWithSystem
     [Test]
     public void GetEnumMemberValueTest()
     {
-        Assert.That(DateTimeKind.Utc.GetEnumMemberValue(), Is.EqualTo(null)); 
+        Assert.That(DateTimeKind.Utc.GetEnumMemberValue(), Is.EqualTo(null));
         Assert.That(((DateTimeKind)10).GetEnumMemberValue(), Is.EqualTo(null));
     }
 }

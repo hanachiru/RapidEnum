@@ -6,7 +6,9 @@ using NUnit.Framework.Legacy;
 namespace RapidEnum.Tests;
 
 [RapidEnumWithType(typeof(JsonTokenType))]
-internal static partial class JsonTokenTypeEnumExtensions { }
+internal static partial class JsonTokenTypeEnumExtensions
+{
+}
 
 [TestFixture]
 public class RapidEnumTestWithThirdParty
@@ -14,7 +16,7 @@ public class RapidEnumTestWithThirdParty
     [Test]
     public void ToStringFastPassTest()
     {
-        Assert.That(JsonTokenType.Comment.ToStringFast(), Is.EqualTo(nameof(JsonTokenType.Comment))); 
+        Assert.That(JsonTokenType.Comment.ToStringFast(), Is.EqualTo(nameof(JsonTokenType.Comment)));
         Assert.That(((JsonTokenType)100).ToStringFast(), Is.EqualTo("100"));
     }
 
@@ -24,19 +26,19 @@ public class RapidEnumTestWithThirdParty
         Assert.That(JsonTokenTypeEnumExtensions.IsDefined(JsonTokenType.Comment), Is.EqualTo(true));
         Assert.That(JsonTokenTypeEnumExtensions.IsDefined((JsonTokenType)byte.MaxValue), Is.EqualTo(false));
     }
-    
+
     [Test]
     public void IsDefinedUsingNamePassTest()
     {
         Assert.That(JsonTokenTypeEnumExtensions.IsDefined(nameof(JsonTokenType.Comment)), Is.EqualTo(true));
         Assert.That(JsonTokenTypeEnumExtensions.IsDefined("10"), Is.EqualTo(false));
     }
-    
+
     [Test]
     public void GetValuesPassTest()
     {
         var values = JsonTokenTypeEnumExtensions.GetValues();
-    
+
         CollectionAssert.AreEqual(values, new[]
         {
             JsonTokenType.None,
@@ -146,7 +148,7 @@ public class RapidEnumTestWithThirdParty
             }
         }
     }
-    
+
     [Test]
     public void TryParseIgnoreCasePassTest()
     {
@@ -171,7 +173,7 @@ public class RapidEnumTestWithThirdParty
             }
         }
     }
-    
+
     [Test]
     public void GetUnderlyingTypeTest()
     {
@@ -182,7 +184,7 @@ public class RapidEnumTestWithThirdParty
     [Test]
     public void GetEnumMembersTest()
     {
-        Assert.That(JsonTokenType.Comment.GetEnumMemberValue(), Is.EqualTo(null)); 
+        Assert.That(JsonTokenType.Comment.GetEnumMemberValue(), Is.EqualTo(null));
         Assert.That(((JsonTokenType)100).GetEnumMemberValue(), Is.EqualTo(null));
     }
 }

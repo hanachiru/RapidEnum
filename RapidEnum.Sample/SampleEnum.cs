@@ -20,12 +20,9 @@ public class SampleEnum
     [RapidEnum]
     public enum Weather
     {
-        [EnumMember(Value = "sun")]
-        Sun,
-        [EnumMember]
-        Cloud,
-        [EnumMember(Value = "rain")]
-        Rain,
+        [EnumMember(Value = "sun")] Sun,
+        [EnumMember] Cloud,
+        [EnumMember(Value = "rain")] Rain,
         Snow
     }
 
@@ -52,7 +49,7 @@ public class SampleEnum
         // True
         // Sun
         bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
-        
+
         // sun
         string enumMemberValue = Weather.Sun.GetEnumMemberValue();
     }
@@ -61,22 +58,22 @@ public class SampleEnum
     {
         // Unspecified,Utc,Local
         IReadOnlyList<DateTimeKind> values = DateTimeKindEnumExtensions.GetValues();
-        
+
         // Unspecified,Utc,Local
         IReadOnlyList<string> names = DateTimeKindEnumExtensions.GetNames();
-        
+
         // Local
         string name = DateTimeKindEnumExtensions.GetName(DateTimeKind.Local);
-        
+
         // Local
         string str = DateTimeKind.Local.ToStringFast();
-        
+
         // True
         bool defined = DateTimeKindEnumExtensions.IsDefined("Local");
-        
+
         // Local
         DateTimeKind parse = DateTimeKindEnumExtensions.Parse("Local");
-        
+
         // True
         // Local
         bool tryParse = DateTimeKindEnumExtensions.TryParse("Local", out DateTimeKind value);

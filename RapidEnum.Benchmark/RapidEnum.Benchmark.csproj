@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\RapidEnum.Generators\RapidEnum.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\RapidEnum.Generators\RapidEnum.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-      <PackageReference Include="FastEnum" Version="1.8.0" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.14.0"/>
+        <PackageReference Include="FastEnum" Version="1.8.0"/>
     </ItemGroup>
 </Project>

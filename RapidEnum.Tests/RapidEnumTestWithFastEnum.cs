@@ -12,13 +12,11 @@ public class RapidEnumTestWithFastEnum
     [RapidEnum]
     internal enum Target
     {
-        [EnumMember(Value = "a")]
-        A,
-        [EnumMember()]
-        B,
+        [EnumMember(Value = "a")] A,
+        [EnumMember()] B,
         C
     }
-    
+
     [Test]
     public void ToStringFastPassTest()
     {
@@ -34,15 +32,19 @@ public class RapidEnumTestWithFastEnum
         Assert.That(TargetEnumExtensions.IsDefined(Target.A), Is.EqualTo(FastEnum.IsDefined(Target.A)));
         Assert.That(TargetEnumExtensions.IsDefined(Target.B), Is.EqualTo(FastEnum.IsDefined(Target.B)));
         Assert.That(TargetEnumExtensions.IsDefined(Target.C), Is.EqualTo(FastEnum.IsDefined(Target.C)));
-        Assert.That(TargetEnumExtensions.IsDefined((Target)int.MaxValue), Is.EqualTo(FastEnum.IsDefined((Target)int.MaxValue)));
+        Assert.That(TargetEnumExtensions.IsDefined((Target)int.MaxValue),
+            Is.EqualTo(FastEnum.IsDefined((Target)int.MaxValue)));
     }
 
     [Test]
     public void IsDefinedUsingNamePassTest()
     {
-        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.A)), Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.A))));
-        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.B)), Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.B))));
-        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.C)), Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.C))));
+        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.A)),
+            Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.A))));
+        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.B)),
+            Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.B))));
+        Assert.That(TargetEnumExtensions.IsDefined(nameof(Target.C)),
+            Is.EqualTo(FastEnum.IsDefined<Target>(nameof(Target.C))));
         Assert.That(TargetEnumExtensions.IsDefined("10"), Is.EqualTo(FastEnum.IsDefined<Target>("10")));
     }
 
@@ -51,7 +53,7 @@ public class RapidEnumTestWithFastEnum
     {
         var actual = TargetEnumExtensions.GetValues();
         var expected = FastEnum.GetValues<Target>();
-        
+
         CollectionAssert.AreEqual(actual, expected);
     }
 
@@ -60,7 +62,7 @@ public class RapidEnumTestWithFastEnum
     {
         var actual = TargetEnumExtensions.GetNames();
         var expected = FastEnum.GetNames<Target>();
-        
+
         CollectionAssert.AreEqual(actual, expected);
     }
 
@@ -70,9 +72,9 @@ public class RapidEnumTestWithFastEnum
         Assert.That(TargetEnumExtensions.GetName(Target.A),
             Is.EqualTo(FastEnum.GetName(Target.A)));
         Assert.That(TargetEnumExtensions.GetName(Target.B),
-                    Is.EqualTo(FastEnum.GetName(Target.B)));
+            Is.EqualTo(FastEnum.GetName(Target.B)));
         Assert.That(TargetEnumExtensions.GetName(Target.C),
-                    Is.EqualTo(FastEnum.GetName(Target.C)));
+            Is.EqualTo(FastEnum.GetName(Target.C)));
     }
 
     [Test]
@@ -80,22 +82,22 @@ public class RapidEnumTestWithFastEnum
     {
         var actual = TargetEnumExtensions.GetMembers();
         var expected = FastEnum.GetMembers<Target>();
-        
+
         CollectionAssert.AreEqual(actual.Select(x => x.Name), expected.Select(x => x.Name));
         CollectionAssert.AreEqual(actual.Select(x => x.Value), expected.Select(x => x.Value));
     }
-    
+
     [Test]
     public void ParsePassTest()
     {
         Assert.That(TargetEnumExtensions.Parse(nameof(Target.A)),
             Is.EqualTo(FastEnum.Parse<Target>(nameof(Target.A))));
         Assert.That(TargetEnumExtensions.Parse(nameof(Target.B)),
-                    Is.EqualTo(FastEnum.Parse<Target>(nameof(Target.B))));
+            Is.EqualTo(FastEnum.Parse<Target>(nameof(Target.B))));
         Assert.That(TargetEnumExtensions.Parse(nameof(Target.C)),
-                    Is.EqualTo(FastEnum.Parse<Target>(nameof(Target.C))));
+            Is.EqualTo(FastEnum.Parse<Target>(nameof(Target.C))));
     }
-    
+
     [Test]
     public void TryParsePassTest()
     {
@@ -199,7 +201,7 @@ public class RapidEnumTestWithFastEnum
     {
         var actual = TargetEnumExtensions.GetUnderlyingType();
         var expected = FastEnum.GetUnderlyingType<Target>();
-        
+
         Assert.That(actual.FullName, Is.EqualTo(expected.FullName));
     }
 
