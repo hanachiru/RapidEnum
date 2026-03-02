@@ -45,16 +45,16 @@ public class RapidEnumGenerator : IIncrementalGenerator
                             RapidEnumAnalyzer.MustNotBeNested, targetSymbol.Locations.FirstOrDefault() ?? Location.None,
                             targetSymbol.Name);
 
-                    if(classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword) == false)
+                    if (classDeclarationSyntax.Modifiers.Any(SyntaxKind.PartialKeyword) == false)
                         return new RapidEnumGeneratorContext(
                             RapidEnumAnalyzer.MustBePartial, targetSymbol.Locations.FirstOrDefault() ?? Location.None,
                             targetSymbol.Name);
-                    
-                    if(classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword) == false)
+
+                    if (classDeclarationSyntax.Modifiers.Any(SyntaxKind.StaticKeyword) == false)
                         return new RapidEnumGeneratorContext(
                             RapidEnumAnalyzer.MustBeStatic, targetSymbol.Locations.FirstOrDefault() ?? Location.None,
                             targetSymbol.Name);
-                    
+
                     return new RapidEnumGeneratorContext(targetSymbol, enumSymbol);
                 }).Where(x => x != null);
 
@@ -69,7 +69,7 @@ public class RapidEnumGenerator : IIncrementalGenerator
                 return;
             }
 
-            var rendered = RenderEnumUtils(generationContext);
+            var rendered = RapidEnumTemplate.Generate(generationContext);
             context.AddSource(generationContext.GeneratedFileName, rendered);
         });
 
@@ -87,9 +87,9 @@ public class RapidEnumGenerator : IIncrementalGenerator
 
                     var generateStateMachineAttribute = context.Attributes
                         .FirstOrDefault(x => x.AttributeClass?.Name == Constants.AttributeName);
-                    
-                    if(generateStateMachineAttribute == null) return null;
-                    
+
+                    if (generateStateMachineAttribute == null) return null;
+
                     var accessibility = enumSymbol.DeclaredAccessibility;
                     if (accessibility != Accessibility.Public && accessibility != Accessibility.Internal)
                         return new RapidEnumGeneratorContext(RapidEnumAnalyzer.MustBeInternalOrPublic,
@@ -102,7 +102,7 @@ public class RapidEnumGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(enumProvider, static (context, generationContext) =>
         {
             if (generationContext == null) return;
-            
+
             if (!generationContext.DiagnosticDescriptor.Equals(RapidEnumAnalyzer.Default))
             {
                 context.ReportDiagnostic(Diagnostic.Create(generationContext.DiagnosticDescriptor,
@@ -110,13 +110,8 @@ public class RapidEnumGenerator : IIncrementalGenerator
                 return;
             }
 
-            var rendered = RenderEnumUtils(generationContext);
+            var rendered = RapidEnumTemplate.Generate(generationContext);
             context.AddSource(generationContext.GeneratedFileName, rendered);
         });
-    }
-
-    private static string RenderEnumUtils(RapidEnumGeneratorContext context)
-    {
-        return RapidEnumTemplate.Generate(context);
     }
 }

@@ -11,10 +11,8 @@ public class RapidEnumTest
     [RapidEnum]
     internal enum Sample
     {
-        [EnumMember(Value = "a")]
-        A,
-        [EnumMember]
-        B,
+        [EnumMember(Value = "a")] A,
+        [EnumMember] B,
         C
     }
 
@@ -83,7 +81,7 @@ public class RapidEnumTest
     public void GetMembersPassTest()
     {
         var members = SampleEnumExtensions.GetMembers();
-        
+
         CollectionAssert.AreEqual(members.Select(x => x.Name), new[]
         {
             nameof(Sample.A),

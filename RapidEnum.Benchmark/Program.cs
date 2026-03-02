@@ -35,7 +35,7 @@ public class BenchmarkTarget
     {
         _ = FastEnum.GetValues<Target>();
     }
-    
+
     [Benchmark]
     public void NET_GetValues()
     {
@@ -125,7 +125,7 @@ public class BenchmarkTarget
     {
         _ = FastEnum.Parse<Target>("A");
     }
-    
+
     [Benchmark]
     public void NET_Parse()
     {
