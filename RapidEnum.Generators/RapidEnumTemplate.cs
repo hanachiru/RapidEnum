@@ -13,12 +13,14 @@ public static class RapidEnumTemplate
                namespace RapidEnum
                {
                    [global::System.AttributeUsage(global::System.AttributeTargets.Enum)]
+                   [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
                    internal sealed class RapidEnumAttribute : global::System.Attribute
                    {
                    
                    }
                    
                    [global::System.AttributeUsage(global::System.AttributeTargets.Class, Inherited = false)]
+                   [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
                    public sealed class RapidEnumWithTypeAttribute : global::System.Attribute
                    {
                        public global::System.Type Type { get; }
