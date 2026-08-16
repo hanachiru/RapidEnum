@@ -1,13 +1,11 @@
-namespace RapidEnum;
-
 using Microsoft.CodeAnalysis;
+
+namespace RapidEnum;
 
 public static class RapidEnumAnalyzer
 {
     private const string Id = "RapidEnum";
     private const string UsageCategory = "Usage";
-
-    public static readonly DiagnosticDescriptor Default = new("Default", "", "", "", DiagnosticSeverity.Hidden, false);
 
     public static readonly DiagnosticDescriptor MustBeInternalOrPublic = new(
         id: $"{Id}001",

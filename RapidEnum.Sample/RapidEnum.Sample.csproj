@@ -9,8 +9,4 @@
     <ItemGroup>
         <ProjectReference Include="..\RapidEnum.Generators\RapidEnum.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="System.Text.Json" Version="8.0.6"/>
-    </ItemGroup>
 </Project>

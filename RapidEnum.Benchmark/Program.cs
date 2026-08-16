@@ -1,7 +1,8 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using FastEnumUtility;
-using RapidEnum;
+
+namespace RapidEnum.Benchmark;
 
 public static class Program
 {

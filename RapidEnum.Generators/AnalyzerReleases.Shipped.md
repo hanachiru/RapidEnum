@@ -5,9 +5,9 @@
 
 ### New Rules
 
-| Rule ID      | Category | Severity | Notes             |
-|--------------|----------|----------|-------------------|
-| RapidEnum001 | Usage    | Error    | RapidEnumAnalyzer |
-| RapidEnum002 | Usage    | Error    | RapidEnumAnalyzer |
-| RapidEnum003 | Usage    | Error    | RapidEnumAnalyzer |
-| RapidEnum004 | Usage    | Error    | RapidEnumAnalyzer |
+Rule ID | Category | Severity | Notes
+--------|----------|----------|--------------------
+RapidEnum001 | Usage    | Error    | RapidEnumAnalyzer
+RapidEnum002 | Usage    | Error    | RapidEnumAnalyzer
+RapidEnum003 | Usage    | Error    | RapidEnumAnalyzer
+RapidEnum004 | Usage    | Error    | RapidEnumAnalyzer

@@ -17,5 +17,6 @@
     <files>
         <file target="\" src="..\README.md"/>
         <file target="analyzers\dotnet\cs\" src="bin\Release\netstandard2.0\RapidEnum.Generators.dll"/>
+        <file target="lib\netstandard2.0\_._" src="_._"/>
     </files>
 </package>
