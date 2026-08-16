@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -40,6 +42,7 @@ public sealed record RapidEnumGeneratorContext
         EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
         UnderlyingTypeKeyword = GetUnderlyingTypeKeyword(enumSymbol);
         EnumMembers = GetEnumMembers(enumSymbol);
+        DistinctEnumMembers = GetDistinctEnumMembers(EnumMembers);
     }
 
     public string GeneratedFileName => $"{ClassName}.g.cs";
@@ -59,7 +62,11 @@ public sealed record RapidEnumGeneratorContext
     /// <summary>C# keyword for the enum's underlying type, used to parse numeric strings in range.</summary>
     public string? UnderlyingTypeKeyword { get; }
 
+    /// <summary>Every member in declaration order, aliases included.</summary>
     public EnumMemberInfo[]? EnumMembers { get; }
+
+    /// <summary>One member per distinct constant, keeping the first declared.</summary>
+    public EnumMemberInfo[]? DistinctEnumMembers { get; }
 
     public bool Equals(RapidEnumGeneratorContext? other)
     {
@@ -140,7 +147,18 @@ public sealed record RapidEnumGeneratorContext
         return enumSymbol.GetMembers()
             .OfType<IFieldSymbol>()
             .Where(static x => x.HasConstantValue)
-            .Select(static x => new EnumMemberInfo(x.ToDisplayString(), GetEnumMemberValue(x)))
+            .Select(static x => new EnumMemberInfo(
+                x.ToDisplayString(),
+                GetEnumMemberValue(x),
+                Convert.ToString(x.ConstantValue, CultureInfo.InvariantCulture) ?? ""))
+            .ToArray();
+    }
+
+    private static EnumMemberInfo[] GetDistinctEnumMembers(EnumMemberInfo[] members)
+    {
+        return members
+            .GroupBy(static x => x.ConstantValue)
+            .Select(static x => x.First())
             .ToArray();
     }
 
