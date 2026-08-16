@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="RapidEnum.Benchmark/RapidEnum.Benchmark.csproj">
+    <BuildType Project="Release" />
+  </Project>
+  <Project Path="RapidEnum.Generators/RapidEnum.Generators.csproj" />
+  <Project Path="RapidEnum.NuGet/RapidEnum.NuGet.csproj" />
+  <Project Path="RapidEnum.Sample/RapidEnum.Sample.csproj" />
+  <Project Path="RapidEnum.Tests/RapidEnum.Tests.csproj" />
+</Solution>

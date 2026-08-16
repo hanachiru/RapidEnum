@@ -5,8 +5,8 @@ on:
     branches: [ main ]
 
 env:
-  DOTNET_VERSION: '8.0.x'
-  SLN_PATH: 'RapidEnum.sln'
+  DOTNET_VERSION: '10.0.x'
+  SLN_PATH: 'RapidEnum.slnx'
   
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macOS-latest ]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - run: dotnet restore
