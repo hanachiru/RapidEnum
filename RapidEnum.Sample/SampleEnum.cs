@@ -51,7 +51,7 @@ public class SampleEnum
         bool tryParse = WeatherEnumExtensions.TryParse("Sun", out Weather value);
 
         // sun
-        string enumMemberValue = Weather.Sun.GetEnumMemberValue();
+        string? enumMemberValue = Weather.Sun.GetEnumMemberValue();
     }
 
     public void SampleUse2()

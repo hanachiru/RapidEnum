@@ -1,63 +1,52 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace RapidEnum;
 
-public record RapidEnumGeneratorContext
+public sealed record RapidEnumGeneratorContext
 {
-    public RapidEnumGeneratorContext(DiagnosticDescriptor diagnosticDescriptor, Location diagnosticLocation,
+    /// <summary>Creates a context that only reports a diagnostic; no source is emitted for it.</summary>
+    public RapidEnumGeneratorContext(
+        DiagnosticDescriptor diagnosticDescriptor,
+        Location diagnosticLocation,
         string className)
     {
         DiagnosticDescriptor = diagnosticDescriptor;
         DiagnosticLocation = diagnosticLocation;
         ClassName = className;
-        NameSpace = null;
-        Accessibility = null;
-        EnumFullName = null;
-        EnumNames = null;
-        EnumMemberValues = null;
     }
 
+    /// <summary>Creates a context for an enum marked with <c>[RapidEnum]</c>.</summary>
     public RapidEnumGeneratorContext(INamedTypeSymbol enumSymbol)
+        : this(enumSymbol, enumSymbol, $"{enumSymbol.Name}EnumExtensions")
     {
-        DiagnosticDescriptor = RapidEnumAnalyzer.Default;
-        DiagnosticLocation = Location.None;
-
-        ClassName = $"{enumSymbol.Name}EnumExtensions";
-        
-        NameSpace = enumSymbol.ContainingNamespace.IsGlobalNamespace
-            ? null
-            : enumSymbol.ContainingNamespace.ToDisplayString();
-        Accessibility = GetAccessibilityName(enumSymbol.DeclaredAccessibility);
-        
-        EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        EnumNames = GetEnumNames(enumSymbol);
-        EnumMemberValues = GetEnumMemberValues(enumSymbol);
     }
 
+    /// <summary>Creates a context for a class marked with <c>[RapidEnumWithType(typeof(...))]</c>.</summary>
     public RapidEnumGeneratorContext(INamedTypeSymbol targetSymbol, INamedTypeSymbol enumSymbol)
+        : this(targetSymbol, enumSymbol, targetSymbol.Name)
     {
-        DiagnosticDescriptor = RapidEnumAnalyzer.Default;
-        DiagnosticLocation = Location.None;
+    }
 
-        ClassName = targetSymbol.Name;
+    private RapidEnumGeneratorContext(INamedTypeSymbol declaringSymbol, INamedTypeSymbol enumSymbol, string className)
+    {
+        ClassName = className;
 
-        NameSpace = targetSymbol.ContainingNamespace.IsGlobalNamespace
+        NameSpace = declaringSymbol.ContainingNamespace.IsGlobalNamespace
             ? null
-            : targetSymbol.ContainingNamespace.ToDisplayString();
-        Accessibility = GetAccessibilityName(targetSymbol.DeclaredAccessibility);
+            : declaringSymbol.ContainingNamespace.ToDisplayString();
+        Accessibility = GetAccessibilityName(declaringSymbol.DeclaredAccessibility);
 
         EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
-        EnumNames = GetEnumNames(enumSymbol);
-        EnumMemberValues = GetEnumMemberValues(enumSymbol);
+        EnumMembers = GetEnumMembers(enumSymbol);
     }
 
     public string GeneratedFileName => $"{ClassName}.g.cs";
 
-    public DiagnosticDescriptor DiagnosticDescriptor { get; }
+    /// <summary>Non-null when the declaration is invalid; in that case no source is generated.</summary>
+    public DiagnosticDescriptor? DiagnosticDescriptor { get; }
 
-    public Location DiagnosticLocation { get; }
+    public Location DiagnosticLocation { get; } = Location.None;
 
     public string ClassName { get; }
 
@@ -65,23 +54,53 @@ public record RapidEnumGeneratorContext
     public string? Accessibility { get; }
 
     public string? EnumFullName { get; }
-    public string[]? EnumNames { get; }
-    public string?[]? EnumMemberValues { get; }
+    public EnumMemberInfo[]? EnumMembers { get; }
 
-    public virtual bool Equals(RapidEnumGeneratorContext? other)
+    public bool Equals(RapidEnumGeneratorContext? other)
     {
-        if (ReferenceEquals(null, other)) return false;
+        if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
 
-        return EqualityContract == other.EqualityContract &&
-               DiagnosticDescriptor.Equals(other.DiagnosticDescriptor) &&
-               EqualityComparer<Location>.Default.Equals(DiagnosticLocation, other.DiagnosticLocation) &&
-               EqualityComparer<string>.Default.Equals(ClassName, other.ClassName) &&
-               EqualityComparer<string?>.Default.Equals(NameSpace, other.NameSpace) &&
-               EqualityComparer<string?>.Default.Equals(Accessibility, other.Accessibility) &&
-               EqualityComparer<string?>.Default.Equals(EnumFullName, other.EnumFullName) &&
-               (EnumNames is null ? other.EnumNames is null : other.EnumNames is not null && EnumNames.SequenceEqual(other.EnumNames)) &&
-               (EnumMemberValues is null ? other.EnumMemberValues is null : other.EnumMemberValues is not null && EnumMemberValues.SequenceEqual(other.EnumMemberValues));
+        return Equals(DiagnosticDescriptor, other.DiagnosticDescriptor) &&
+               DiagnosticLocation.Equals(other.DiagnosticLocation) &&
+               ClassName == other.ClassName &&
+               NameSpace == other.NameSpace &&
+               Accessibility == other.Accessibility &&
+               EnumFullName == other.EnumFullName &&
+               SequenceEquals(EnumMembers, other.EnumMembers);
+    }
+
+    public override int GetHashCode()
+    {
+        var hashCode = ClassName.GetHashCode();
+        hashCode = (hashCode * 397) ^ (DiagnosticDescriptor?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ DiagnosticLocation.GetHashCode();
+        hashCode = (hashCode * 397) ^ (NameSpace?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ (Accessibility?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ (EnumFullName?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ SequenceHashCode(EnumMembers);
+        return hashCode;
+    }
+
+    private static bool SequenceEquals<T>(T[]? left, T[]? right)
+    {
+        if (ReferenceEquals(left, right)) return true;
+        if (left is null || right is null) return false;
+        return left.SequenceEqual(right);
+    }
+
+    // Hash the elements, not the array reference, so that structurally equal contexts agree on their hash code.
+    private static int SequenceHashCode<T>(T[]? values)
+    {
+        if (values is null) return 0;
+
+        var hashCode = values.Length;
+        foreach (var value in values)
+        {
+            hashCode = (hashCode * 397) ^ (value?.GetHashCode() ?? 0);
+        }
+
+        return hashCode;
     }
 
     private static string GetAccessibilityName(Accessibility accessibility)
@@ -94,38 +113,23 @@ public record RapidEnumGeneratorContext
         };
     }
 
-    private static string[] GetEnumNames(INamedTypeSymbol enumSymbol)
+    private static EnumMemberInfo[] GetEnumMembers(INamedTypeSymbol enumSymbol)
     {
         return enumSymbol.GetMembers()
-            .Where(x => x.Kind == SymbolKind.Field && x is IFieldSymbol { HasConstantValue: true })
-            .Select(x => x.ToDisplayString())
+            .OfType<IFieldSymbol>()
+            .Where(static x => x.HasConstantValue)
+            .Select(static x => new EnumMemberInfo(x.ToDisplayString(), GetEnumMemberValue(x)))
             .ToArray();
     }
 
-    private static string?[] GetEnumMemberValues(INamedTypeSymbol enumSymbol)
+    private static string? GetEnumMemberValue(IFieldSymbol field)
     {
-        return enumSymbol.GetMembers()
-            .Select(x =>
-            {
-                return x.GetAttributes()
-                    .Where(static x =>
-                        x.AttributeClass?.Name == nameof(System.Runtime.Serialization.EnumMemberAttribute))
-                    .Select(static x => x.NamedArguments.FirstOrDefault().Value.Value?.ToString())
-                    .FirstOrDefault();
-            })
-            .ToArray();
-    }
-    
-    public override int GetHashCode()
-    {
-        var hashCode = ClassName.GetHashCode();
-        hashCode = (hashCode * 397) ^ DiagnosticDescriptor.GetHashCode();
-        hashCode = (hashCode * 397) ^ DiagnosticLocation.GetHashCode();
-        hashCode = (hashCode * 397) ^ (NameSpace?.GetHashCode() ?? 17);
-        hashCode = (hashCode * 397) ^ (Accessibility?.GetHashCode() ?? 17);
-        hashCode = (hashCode * 397) ^ (EnumFullName?.GetHashCode() ?? 17);
-        hashCode = (hashCode * 397) ^ (EnumNames?.GetHashCode() ?? 17);
-        hashCode = (hashCode * 397) ^ (EnumMemberValues?.GetHashCode() ?? 17);
-        return hashCode;
+        return field.GetAttributes()
+            .Where(static x =>
+                x.AttributeClass?.Name == nameof(System.Runtime.Serialization.EnumMemberAttribute))
+            .Select(static x => x.NamedArguments
+                .FirstOrDefault(static arg => arg.Key == nameof(System.Runtime.Serialization.EnumMemberAttribute.Value))
+                .Value.Value?.ToString())
+            .FirstOrDefault();
     }
 }
