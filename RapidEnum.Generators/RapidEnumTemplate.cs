@@ -170,7 +170,7 @@ public static class RapidEnumTemplate
                             switch (name)
                             {
                                 {{SwitchArms(x => $"case not null when name.Equals(nameof(global::{x.FullName}), global::System.StringComparison.OrdinalIgnoreCase):\n                  value = global::{x.FullName};\n                  return true;")}}
-                                case not null when int.TryParse(name, out var val):
+                                case not null when {{context.UnderlyingTypeKeyword}}.TryParse(name, out var val):
                                     value = ({{context.EnumFullName}})val;
                                     return true;
                                 default:
@@ -186,7 +186,7 @@ public static class RapidEnumTemplate
                             switch (name)
                             {
                                 {{SwitchArms(x => $"case nameof(global::{x.FullName}):\n                  value = global::{x.FullName};\n                  return true;")}}
-                                case not null when int.TryParse(name, out var val):
+                                case not null when {{context.UnderlyingTypeKeyword}}.TryParse(name, out var val):
                                     value = ({{context.EnumFullName}})val;
                                     return true;
                                 default:
