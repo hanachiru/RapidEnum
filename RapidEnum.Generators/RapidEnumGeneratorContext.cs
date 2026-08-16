@@ -38,6 +38,7 @@ public sealed record RapidEnumGeneratorContext
         Accessibility = GetAccessibilityName(declaringSymbol.DeclaredAccessibility);
 
         EnumFullName = enumSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+        UnderlyingTypeKeyword = GetUnderlyingTypeKeyword(enumSymbol);
         EnumMembers = GetEnumMembers(enumSymbol);
     }
 
@@ -54,6 +55,10 @@ public sealed record RapidEnumGeneratorContext
     public string? Accessibility { get; }
 
     public string? EnumFullName { get; }
+
+    /// <summary>C# keyword for the enum's underlying type, used to parse numeric strings in range.</summary>
+    public string? UnderlyingTypeKeyword { get; }
+
     public EnumMemberInfo[]? EnumMembers { get; }
 
     public bool Equals(RapidEnumGeneratorContext? other)
@@ -67,6 +72,7 @@ public sealed record RapidEnumGeneratorContext
                NameSpace == other.NameSpace &&
                Accessibility == other.Accessibility &&
                EnumFullName == other.EnumFullName &&
+               UnderlyingTypeKeyword == other.UnderlyingTypeKeyword &&
                SequenceEquals(EnumMembers, other.EnumMembers);
     }
 
@@ -78,6 +84,7 @@ public sealed record RapidEnumGeneratorContext
         hashCode = (hashCode * 397) ^ (NameSpace?.GetHashCode() ?? 0);
         hashCode = (hashCode * 397) ^ (Accessibility?.GetHashCode() ?? 0);
         hashCode = (hashCode * 397) ^ (EnumFullName?.GetHashCode() ?? 0);
+        hashCode = (hashCode * 397) ^ (UnderlyingTypeKeyword?.GetHashCode() ?? 0);
         hashCode = (hashCode * 397) ^ SequenceHashCode(EnumMembers);
         return hashCode;
     }
@@ -110,6 +117,21 @@ public sealed record RapidEnumGeneratorContext
             Microsoft.CodeAnalysis.Accessibility.Internal => "internal",
             Microsoft.CodeAnalysis.Accessibility.Public => "public",
             _ => ""
+        };
+    }
+
+    private static string GetUnderlyingTypeKeyword(INamedTypeSymbol enumSymbol)
+    {
+        return enumSymbol.EnumUnderlyingType?.SpecialType switch
+        {
+            SpecialType.System_Byte => "byte",
+            SpecialType.System_SByte => "sbyte",
+            SpecialType.System_Int16 => "short",
+            SpecialType.System_UInt16 => "ushort",
+            SpecialType.System_UInt32 => "uint",
+            SpecialType.System_Int64 => "long",
+            SpecialType.System_UInt64 => "ulong",
+            _ => "int"
         };
     }
 
